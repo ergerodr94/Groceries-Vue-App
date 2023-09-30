@@ -3,6 +3,7 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </nav>
+  <!-- Route components will dynamically be injected here-->
   <router-view/>
 </template>
 
