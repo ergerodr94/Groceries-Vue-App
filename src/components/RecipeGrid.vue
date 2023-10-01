@@ -4,12 +4,15 @@
       <h1>Recipes</h1>
       <input
         type="text"
-        v-model="searchQuery"
+        v-model.lazy="searchQuery"
         @input="handleSearchInput"
         placeholder="Search for recipes"/>
+        <v-btn color="blue">
+          Search
+        </v-btn>
 
         <div class="grid">
-                <li v-for="recipe in recipes" >
+                <li v-for="recipe in recipes">
                     {{ recipe.recipe.label }}
                     <img src="${recipe.recipe.image}">
                 </li>
