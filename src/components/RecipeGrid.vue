@@ -1,25 +1,29 @@
 <!-- src/components/RecipeList.vue -->
+
 <template>
-    <div>
-      <h1>Recipes</h1>
-      <input
+  <input
         type="text"
-        v-model.lazy="searchQuery"
-        @input="handleSearchInput"
+        v-model="searchQuery"
         placeholder="Search for recipes"/>
-        <v-btn color="blue">
+        <v-btn 
+          @click="handleSearchInput">
           Search
         </v-btn>
+  <v-row>
+    <template v-for="recipe in recipes">
+      <v-col>
+        <v-img
+          :src="`${recipe.recipe.images.SMALL.url}`"
+          cover
+          :height="`${recipe.recipe.images.SMALL.height}`"
+          :width="`${recipe.recipe.images.SMALL.width}`"
+        ></v-img>
+      </v-col>
 
-        <div class="grid">
-                <li v-for="recipe in recipes">
-                    {{ recipe.recipe.label }}
-                    <img src="${recipe.recipe.image}">
-                </li>
-        </div>
 
-    </div>
-  </template>
+    </template>
+  </v-row>
+</template>
   
   <script>
   import axios from 'axios';

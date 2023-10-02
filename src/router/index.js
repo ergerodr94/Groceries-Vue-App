@@ -1,13 +1,30 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import RecipeGrid from '../components/RecipeGrid'
 import RecipeDetails from '../components/RecipeDetails'
+import uploadGroceries from '../components/UploadGroceries'
+import HouseHold from '../components/HouseHold'
+import Profile from '../components/Profile'
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
+    path: '/explore',
+    name: 'Explore',
     component: RecipeGrid
+  },
+  {
+    path: '/upload',
+    name: 'Upload',
+    component: uploadGroceries
+  },
+  {
+    path: '/household',
+    name: 'HouseHold',
+    component: HouseHold
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile
   },
   {
     path: '/about',
