@@ -10,9 +10,7 @@ RUN npm install
 
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
-
-# copy node_modules to the container
-#COPY --from=0 /app/node_modules /app/node_modules
-
-EXPOSE 8080
-CMD ["npm", "run", "serve"]
+# https://www.youtube.com/watch?v=CSb-sHNM2NY&ab_channel=U-LabsInternational
+#https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Dockerfile-vs-docker-compose-Whats-the-difference#:~:text=The%20Dockerfile%20is%20used%20to,the%20docker%2Dcompose%20up%20command.
+EXPOSE 8081
+CMD ["npm", "run", "serve", "--", "--port", "8081"]
