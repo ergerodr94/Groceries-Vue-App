@@ -1,6 +1,7 @@
 <!-- src/components/RecipeList.vue -->
 
 <template>
+  <div>
   <input
         type="text"
         v-model="searchQuery"
@@ -23,6 +24,7 @@
 
     </template>
   </v-row>
+</div>
 </template>
   
   <script>

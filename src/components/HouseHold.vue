@@ -1,6 +1,7 @@
 <template>
     <div>
-      <!-- your template code here -->
+      You are not in a household yet.
+Please join a household or create your own household
     </div>
   </template>
   
