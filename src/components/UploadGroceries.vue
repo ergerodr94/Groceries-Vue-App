@@ -1,6 +1,6 @@
 <template>
     <div>
-      <!-- your template code here -->
+      My Items
     </div>
   </template>
   
