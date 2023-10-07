@@ -1,7 +1,7 @@
 <template>
     <div>
       You are not in a household yet.
-Please join a household or create your own household
+      Please join a household or create your own household
     </div>
   </template>
   

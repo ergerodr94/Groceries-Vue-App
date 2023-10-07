@@ -4,6 +4,7 @@ import RecipeDetails from '../components/RecipeDetails'
 import uploadGroceries from '../components/UploadGroceries'
 import HouseHold from '../components/HouseHold'
 import Profile from '../components/Profile'
+import Login from '../components/Login'
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: Profile
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
   },
   {
     path: '/about',
