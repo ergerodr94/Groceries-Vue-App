@@ -7,6 +7,7 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import '@mdi/font/css/materialdesignicons.css'
 //import vuetify from './vuetify.js'
 
 const vuetifyOptions = {}
@@ -28,10 +29,13 @@ const myKitchenLightTheme = {
 }
 
 const vuetifyApp = createVuetify({
+    icons: {
+      defaultSet: 'mdi',
+    },
     components,
     directives,
     theme:{
-        defaultTheme: 'light',
+        defaultTheme: 'dark',
         themes: {
             myKitchenLightTheme,
         },

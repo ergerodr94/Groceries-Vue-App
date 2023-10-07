@@ -14,6 +14,9 @@
             <v-btn>
               <RouterLink to="/profile"> Profile </RouterLink>
             </v-btn>
+            <v-btn>
+              <RouterLink to="/login"> Login </RouterLink>
+            </v-btn>
         </v-app-bar>
     </div>
   </template>
