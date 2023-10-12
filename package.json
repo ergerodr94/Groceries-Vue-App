@@ -14,7 +14,10 @@
     "vuex": "^4.0.0",
     "vuetify": "3.3.19",
     "@mdi/font": "7.3.67",
-    "@mdi/js": "7.3.67"
+    "@mdi/js": "7.3.67",
+    "firebase": "10.4.0",
+    "firebase-tools": "12.4.8"
+
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.3.4",
