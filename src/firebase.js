@@ -3,6 +3,7 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import 'firebase/compat/storage';
 
+
 const firebaseConfig = { 
     apiKey: "AIzaSyC6_5UcHWmpAV5EZPUXbnJrTcRL7KTrNuU",
     authDomain: "unpack-the-pantry-fc442.firebaseapp.com",
@@ -18,5 +19,9 @@ firebase.initializeApp(firebaseConfig);
 export const db = firebase.firestore();
 export const auth = firebase.auth();
 export const storage = firebase.storage();
+
+
+
+
 
 
