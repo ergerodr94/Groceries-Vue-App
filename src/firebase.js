@@ -3,7 +3,7 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import 'firebase/compat/storage';
 
-
+//https://www.youtube.com/watch?v=gA6WGYQWrKc
 const firebaseConfig = { 
     apiKey: "AIzaSyC6_5UcHWmpAV5EZPUXbnJrTcRL7KTrNuU",
     authDomain: "unpack-the-pantry-fc442.firebaseapp.com",
