@@ -15,7 +15,19 @@
 <script>
 import axios from 'axios';
 import firebase from 'firebase/compat/app';
-import { auth } from '../firebase.js'
+//import { auth } from '../firebase.js'
+import { GoogleAuthProvider, signInWithPopup, getAuth, onAuthStateChanged } from "firebase/auth";
+const auth = getAuth();
+
+onAuthStateChanged(auth, (user) => {
+  if(user){
+  // https://firebase.google.com/docs/reference/js/auth.user
+  const uid = user.uid;
+  console.log("uid: ", uid)
+  } else { 
+    // User is signed out
+  }
+})
 
 export default {
     name: 'LoginComp',
@@ -23,6 +35,7 @@ export default {
         return {
             show1: false,
             email: "",
+            fireID: "", 
             password: "",
             loginResponse: ""
         }
@@ -30,9 +43,25 @@ export default {
     methods: {
       handleLogin(){
         // Replace with your actual API endpoint
-        const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider);
-      }
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(auth, provider)
+          .then((result) => {
+            // Get Google Access Token
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken; 
+            console.log("Token: ", token)
+            //Signed in user info
+            const user = result.user;
+          }).catch((error) => {
+            const errorCode = error.code;
+            console.log(errorCode);
+            const errorMessage = error.message;
+            console.log(errorMessage);
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            console.log(credential);
+          });
+      },
+
     },
     computed: {
         // Your computed properties here
