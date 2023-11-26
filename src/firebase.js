@@ -1,7 +1,9 @@
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
-import 'firebase/compat/auth';
-import 'firebase/compat/storage';
+import { initializeApp } from 'firebase/app';
+
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { connectStorageEmulator, getStorage} from 'firebase/storage';
+import { connectAuthEmulator } from 'firebase/auth';
 
 //https://www.youtube.com/watch?v=gA6WGYQWrKc
 const firebaseConfig = { 
@@ -14,11 +16,15 @@ const firebaseConfig = {
     measurementId: "G-78G6T9CCV3"
 };
 
-firebase.initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
-export const db = firebase.firestore();
-export const auth = firebase.auth();
-export const storage = firebase.storage();
+export const db = getFirestore();
+export const auth = getAuth();
+export const storage = getStorage();
+
+connectAuthEmulator(auth, "http://127.0.0.1:9099");
+connectFirestoreEmulator(db, "http://127.0.0.1", 8080);
+
 
 
 

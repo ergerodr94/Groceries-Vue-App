@@ -15,9 +15,8 @@
 <script>
 import axios from 'axios';
 import firebase from 'firebase/compat/app';
-//import { auth } from '../firebase.js'
+import { auth } from '../firebase.js'
 import { GoogleAuthProvider, signInWithPopup, getAuth, onAuthStateChanged } from "firebase/auth";
-const auth = getAuth();
 
 onAuthStateChanged(auth, (user) => {
   if(user){
