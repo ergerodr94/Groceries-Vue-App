@@ -1,4 +1,7 @@
 const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp();
+const db = admin.firestore();
 
 exports.makeUppercase = functions.firestore.document('/messages/{documentId}')
     .onCreate((snap, context) => {
@@ -31,6 +34,17 @@ exports.api = functions.https.onRequest((req, res) => {
   
 exports.userAdded = functions.auth.user().onCreate(user => {
   console.log(`${user.email} is created` );
+
+  var docRef = db.collection("users").doc().set({
+    UID: user.uid,
+    name: user.displayName,
+    houseId: null, 
+    email: user.email,
+    accepted: false
+  });
+
+  console.log(docRef);
+
   return Promise.resolve();
 });
   
