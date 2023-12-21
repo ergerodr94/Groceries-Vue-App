@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const { addDoc, collection, doc, setDoc } = require('firebase/firestore');
 admin.initializeApp();
 const db = admin.firestore();
 
@@ -35,15 +36,38 @@ exports.api = functions.https.onRequest((req, res) => {
 exports.userAdded = functions.auth.user().onCreate(user => {
   console.log(`${user.email} is created` );
 
-  var docRef = db.collection("users").doc().set({
+  var userDocRef = db.collection("users").doc(`${user.uid}`).set({
     UID: user.uid,
     name: user.displayName,
     houseId: null, 
     email: user.email,
-    accepted: false
+    accepted: false,
+    diet_restrictions: {
+      vegetarian: true,
+      pescatarian: false,
+      gluten_free: false,
+      lactose_intolerant: true, 
+      gluten_intolerant: false, 
+      vegetarian: true,
+      diabetic: true, 
+      low_carb: false
+    },
+    food_allergies: ["Milk", "Eggs", "Fish", "Peanuts", "Wheat", "Gluten"]
   });
 
-  console.log(docRef);
+  /* This code would be useful when generating items for a user
+  var dietDocRef = db.collection("users").doc(user.uid).collection("items").doc("item_name").set({
+    ownerId: user.uid,
+    houseId: null,
+    location: null, 
+    itemName: name, 
+    communal: false,
+    numRemaining: quantity, 
+    date_created: ?, 
+  });
+*/
+
+  console.log("docRef: ", userDocRef);
 
   return Promise.resolve();
 });
