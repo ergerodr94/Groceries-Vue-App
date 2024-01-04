@@ -5,12 +5,18 @@ import uploadGroceries from '../components/UploadGroceries'
 import HouseHold from '../components/HouseHold'
 import Profile from '../components/Profile'
 import Login from '../components/Login'
+import NewUserSetup from '../components/NewUserSetup'
 
 const routes = [
   {
     path: '/explore',
     name: 'Explore',
     component: RecipeGrid
+  },
+  {
+    path: '/newuser',
+    name: 'NewUserSetup',
+    component: NewUserSetup
   },
   {
     path: '/upload',
@@ -23,7 +29,7 @@ const routes = [
     component: HouseHold
   },
   {
-    path: '/profile',
+    path: '/profile/',
     name: 'Profile',
     component: Profile
   },

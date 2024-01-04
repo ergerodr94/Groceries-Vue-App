@@ -3,7 +3,10 @@
     <v-sheet width="300" class="mx-auto">
       <v-form fast-fail @submit.prevent>
 
-        <h1 v-if="$store.state.user"> Hello! {{ $store.state.user.displayName }}</h1>
+        <div v-if="$store.state.user"> 
+          <h1>Hello! {{ $store.state.user.displayName }} </h1>
+        
+        </div>
 
         <v-btn v-else id="signInBtn"
         @Click="$store.commit('handleLogin')">Sign in with Google</v-btn>

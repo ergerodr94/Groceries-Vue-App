@@ -3,6 +3,7 @@ import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebas
 import { auth } from '../firebase.js'
 import axios from 'axios';
 import firebase from 'firebase/compat/app';
+import router from '@/router/index.js';
 
 onAuthStateChanged(auth, (user) => {
   if(user){
@@ -19,8 +20,9 @@ export default createStore({
   state: {
     //Where our Data is stored.  
     show1: false,
+    newUser: true, 
     email: "",
-    user: "", 
+    user: null, 
     password: "",
     loginResponse: ""
   },
@@ -42,6 +44,7 @@ export default createStore({
           console.log("Token: ", token)
           //Signed in user info
           state.user = result.user;
+          router.push('/newuser');
         }).catch((error) => {
           const errorCode = error.code;
           console.log(errorCode);
