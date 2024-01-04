@@ -1,0 +1,60 @@
+<template>
+  <div>
+    <p>{{ questions[currentQuestion].text }}</p>
+    <v-form v-if="currentQuestion == 1">
+      <v-text-field
+        v-model="householdName"
+        label="Name of Household"></v-text-field>
+      <v-btn> Create HouseHold! </v-btn>
+    </v-form>
+    <v-btn v-for="answer in questions[currentQuestion].answers" :key="answer.text" @click="handleAnswer(answer)">
+      {{ answer.text }}
+    </v-btn>  
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'NewUserSetup',
+  data() {
+    return {
+      currentQuestion: 0,
+      individual: null, 
+      householdName: "",
+      questions: [
+        {
+          text: "Unpack the Pantry uses \'households\' to keep inventory of the groceries you upload to the app. \
+          You can use it individually with yourself as the head of a household or join an existing one a friend has created. \
+          You can always add friends to your household later. Are you planning on using Unpack the Pantry by yourself, or with friends?",
+          answers: [
+            { text: 'Individually', nextQuestion: 1 },
+            { text: 'With an Existing Household', nextQuestion: 2 },
+          ],
+        },
+        {
+          text: 'As an individual user, you control all aspects of your online household! Please provide a name for your Household!',
+          answers: [
+            { text: 'Back', nextQuestion: 0 },
+          ],
+        },
+        {
+          text: 'Did you want to join an existing household, or create a new One?',
+          answers: [
+            { text: 'Join Existing', nextQuestion: 3 },
+            { text: 'Create New', nextQuestion: 3 },
+          ],
+        },
+        // More questions...
+      ],
+    };
+  },
+  methods: {
+    handleAnswer(answer) {
+      this.currentQuestion = answer.nextQuestion;
+    },
+    createHousehold(){
+
+    }
+  },
+};
+</script>
