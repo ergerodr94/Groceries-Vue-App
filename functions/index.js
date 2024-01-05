@@ -1,8 +1,31 @@
 const functions = require('firebase-functions');
+const express = require('express');
+const cors = require('cors');
+const app = express(); 
+
 const admin = require('firebase-admin');
 const { addDoc, collection, doc, setDoc } = require('firebase/firestore');
+const { user } = require('firebase-functions/v1/auth');
+const { Auth } = require('firebase-admin/auth');
 admin.initializeApp();
 const db = admin.firestore();
+
+app.use(cors({origin: true}));
+app.use(express.json());
+
+app.post('/createHousehold', (req, res) => {
+  console.log(req.body)
+  try{
+    const houseDocRef = db.collection('houses').doc('houseID').set({
+      houseId: 'Some random ID',
+      manager: 'manager goes here'
+    })
+  } catch(error){
+    console.log(error);
+  }
+})
+
+exports.createHousehold = functions.https.onRequest(app);
 
 exports.makeUppercase = functions.firestore.document('/messages/{documentId}')
     .onCreate((snap, context) => {
@@ -15,23 +38,6 @@ exports.makeUppercase = functions.firestore.document('/messages/{documentId}')
 exports.helloWorld = functions.https.onRequest((req, res) => {
   res.send('Hello from firebase function');
 });
-
-exports.api = functions.https.onRequest((req, res) => {
-    switch (req.method){
-      case 'GET':
-        res.send('it was a GET request');
-        break;
-      case 'POST':
-        const body = req.body;
-        res.send(body);
-        break;
-      case 'DELETE':
-        res.send('it was a DELETE request');
-        break;
-      default:
-        res.send('it was a default request....')
-    }
-  });
   
 exports.userAdded = functions.auth.user().onCreate(user => {
   console.log(`${user.email} is created` );

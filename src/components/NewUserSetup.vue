@@ -5,7 +5,7 @@
       <v-text-field
         v-model="householdName"
         label="Name of Household"></v-text-field>
-      <v-btn> Create HouseHold! </v-btn>
+      <v-btn @click="createHousehold()"> Create HouseHold! </v-btn>
     </v-form>
     <v-btn v-for="answer in questions[currentQuestion].answers" :key="answer.text" @click="handleAnswer(answer)">
       {{ answer.text }}
@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'NewUserSetup',
   data() {
@@ -52,8 +54,15 @@ export default {
     handleAnswer(answer) {
       this.currentQuestion = answer.nextQuestion;
     },
-    createHousehold(){
-
+    async createHousehold(){
+      const url = 'http://localhost:5001/unpack-the-pantry-fc442/us-central1/createHousehold/createHousehold'
+      const houseHold = this.householdName
+      try {
+        const response = await axios.post(url, { household: houseHold });
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
     }
   },
 };
