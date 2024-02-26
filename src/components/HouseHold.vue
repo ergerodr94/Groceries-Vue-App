@@ -1,9 +1,15 @@
 <template>
-    <div>
+
+
+    <div v-if="householdName == null">
       You are not in a household yet.
       Please join a household or create your own household
     </div>
-  </template>
+        
+    <div v-else>
+      {{ householdName }}
+    </div>
+</template>
   
   <script>
   export default {
@@ -11,6 +17,7 @@
     data() {
       return {
         // your data properties here
+        householdName: this.$store.state.household
       }
     },
     methods: {

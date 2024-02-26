@@ -16,12 +16,15 @@ app.use(express.json());
 app.post('/createHousehold', (req, res) => {
   console.log(req.body)
   try{
-    const houseDocRef = db.collection('houses').doc('houseID').set({
-      houseId: 'Some random ID',
-      manager: 'manager goes here'
-    })
+    const houseDocRef = db.collection('houses').doc().set({
+      houseId: req.body.household,
+      manager: req.body.displayName
+    });
+    res.status(200).send({status: 'success', message: 'Household created successfully'});
   } catch(error){
+    console.log("What is happening? ");
     console.log(error);
+    res.status(500).send({status: 'error', message: 'An Error Occurred while creating household'})
   }
 })
 
