@@ -21,6 +21,7 @@ export default createStore({
     //Where our Data is stored.  
     show1: false,
     newUser: true, 
+    household: null,
     email: "",
     user: null, 
     password: "",
@@ -56,6 +57,11 @@ export default createStore({
     },
     handleLogout(state){
       state.user = "";
+    },
+
+    houseRegistered(state, houseName){
+      state.newUser = false;
+      state.household = houseName;
     }
     
   },
