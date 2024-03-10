@@ -9,6 +9,8 @@
     <div v-else>
       {{ householdName }}
     </div>
+
+ 
 </template>
   
   <script>
@@ -18,6 +20,7 @@
       return {
         // your data properties here
         householdName: this.$store.state.household
+        
       }
     },
     methods: {

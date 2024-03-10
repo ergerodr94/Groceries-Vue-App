@@ -4,6 +4,7 @@ import { auth } from '../firebase.js'
 import axios from 'axios';
 import firebase from 'firebase/compat/app';
 import router from '@/router/index.js';
+import { VueElement } from 'vue';
 
 onAuthStateChanged(auth, (user) => {
   if(user){
