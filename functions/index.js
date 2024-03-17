@@ -30,6 +30,24 @@ app.post('/createHousehold', (req, res) => {
 
 exports.createHousehold = functions.https.onRequest(app);
 
+app.post('/saveItem', (req, res) => {
+  console.log(req.body);
+  if(req.body.ownerID === ""){
+    return ({"401":"Please Login To continue"})
+  }
+  try{
+    const groceryDocRef = db.collection("items").doc().set({
+      ownerID: req.body.ownerID,
+      //houseID: req.body.household,
+      groceryItem: req.body.groceryItem
+    });
+    res.status(200).send({status: 'success', message: 'Item Saved Successfully'});
+  } catch(error){
+    console.log("saveItem, Error: " + error);
+  }
+})
+exports.saveItem = functions.https.onRequest(app);
+
 exports.makeUppercase = functions.firestore.document('/messages/{documentId}')
     .onCreate((snap, context) => {
       const original = snap.data().original;
