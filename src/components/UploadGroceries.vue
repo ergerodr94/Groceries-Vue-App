@@ -23,23 +23,20 @@
 
           <v-row no-gutters>
             <v-spacer></v-spacer>
-            <v-checkbox> Communal</v-checkbox>
+            <v-checkbox v-model="groceryItem.communal"> Communal</v-checkbox>
             <v-col>
-              <v-text-field placeholder="Item Name" hide-details></v-text-field>
-              <v-text-field placeholder="Remaining" hide-details></v-text-field>
+              <v-text-field v-model="groceryItem.name" placeholder="Item Name" ></v-text-field>
+              <v-text-field v-model="groceryItem.quantity" placeholder="Remaining" hide-details></v-text-field>
             </v-col>
             <v-col cols="5">
-              <v-select placeholder="location" :items="locations" chips flat variant="solo"></v-select>
+              <v-select v-model="groceryItem.location" placeholder="location" :items="locations" chips flat variant="solo"></v-select>
             </v-col>
             <v-divider vertical class="mx-4"></v-divider>
           </v-row>
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn variant="text" color="secondary">
-              Cancel
-            </v-btn>
-            <v-btn variant="text" color="primary">
+            <v-btn @click="saveGroceryItem()" variant="text" color="primary">
               Save
             </v-btn>
           </v-card-actions>
@@ -49,23 +46,52 @@
     </v-expansion-panels>
 
 
-
-
-
     My Items
   </div>
 </template>
 
 <script>
+import { db } from '@/firebase';
+import axios from 'axios'; 
+
 export default {
   name: 'UploadGroceries',
   data() {
     return {
-      locations: ["freezer", "Cabinet1", "Cabinet2", "spice_rack"]
+      groceryItem:{
+        communal: false,
+        name: '',
+        location: '',
+        quantity: '',
+        household: this.$store.state.household
+      },
+      locations: ["freezer", "Cabinet1", "Cabinet2", "spice_rack"],
+      groceries: []
+      
     }
   },
   methods: {
     // your methods here
+    async saveGroceryItem() {
+      const url = 'http://localhost:5001/unpack-the-pantry-fc442/us-central1/saveItem/saveItem'
+      const ownerID = "someID"//this.$store.state.user.displayName
+      
+      const response = await axios.post(url, {
+        ownerID: ownerID,
+        groceryItem: this.groceryItem,
+        household: this.household
+      }).then(response => {
+        if(response.status === 200){
+            window.alert('Item Saved Successfully');
+            //this.$store.commit('houseRegistered', houseHold)
+          }
+      }).catch(error => {
+        console.error(error);
+        console.log("RESPOSNE: ");
+        console.log(response.data);
+        window.alert('An error occurred while saving your Item.');
+      })
+    }
   },
   computed: {
     // your computed properties here
