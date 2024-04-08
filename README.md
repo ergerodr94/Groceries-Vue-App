@@ -1,19 +1,56 @@
 # groceries-vue-app
 
-## Project setup
-```
-npm install
+An application for managing your pantry inventory, planning meals, and enhancing your cooking experience. 
+
+## Project Overview
+
+This repository is a modernization of the web2py project [Unpack the Pantry](https://bitbucket.org/ergerodr/groceriesapi/src/master/) with a focus on improving development speed and user experience. 
+
+Development and deployment is now faster, easier with the usage of the Google Cloud Platform.
+
+## Features
+
+### Inventory uploading
+
+Web2py was primarily used for both front and backend in the first version. Static web pages were served and 
+users were forced to reload each webpage to navigate. Vue.js' primary use case was for making the main recipe 
+search page more dynamic.
+
+![](https://bitbucket.org/ergerodr/groceries-vue-app/src/master/src/assets/Inventory_generation.gif)
+
+### Recipe search
+
+One of the major challenges of the application was the recipe search. While it works with basic queries for now,
+eventually the search page will recommend recipes to minimze food waste by prioritizing aging inventory. 
+
+![](https://bitbucket.org/ergerodr/groceries-vue-app/src/master/src/assets/Recipe_Search.gif)
+
+### Account Authentication
+
+In the 2nd version, vue.js was brought to the foreground 
+creating a modern dynamic experience when navigating the site. Serverside logic is written using Google Cloud 
+Functions and is hosted on Google Cloud.
+
+![](https://bitbucket.org/ergerodr/groceries-vue-app/src/master/src/assets/Household_creation.gif)
+
+
+## Build and Installation
+
+Currently, [Firebase cloud emulators](https://firebase.google.com/docs/emulator-suite) are the primary method 
+to host this project. This project uses the Authentication, Firestore, Web Hosting and Cloud Functions 
+emulators. 
+
+```sh
+firebase emulators:start
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
+
+Docker Compose is used to build the Vue.js Frontend.
+
+```sh
+docker compose up #to build
+docker compose down #destroys app
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
