@@ -31,7 +31,7 @@ In the 2nd version, vue.js was brought to the foreground
 creating a modern dynamic experience when navigating the site. Serverside logic is written using Google Cloud 
 Functions and is hosted on Google Cloud.
 
-![](https://bitbucket.org/ergerodr/groceries-vue-app/src/master/src/assets/Household_creation.gif)
+![Household_creation](src/assets/Household_creation.gif)
 
 
 ## Build and Installation
