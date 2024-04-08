@@ -16,14 +16,14 @@ Web2py was primarily used for both front and backend in the first version. Stati
 users were forced to reload each webpage to navigate. Vue.js' primary use case was for making the main recipe 
 search page more dynamic.
 
-![Inventory_generation](src/master/src/assets/Inventory_generation.gif)
+![Inventory_generation](src/assets/Inventory_generation.gif)
 
 ### Recipe search
 
 One of the major challenges of the application was the recipe search. While it works with basic queries for now,
 eventually the search page will recommend recipes to minimze food waste by prioritizing aging inventory. 
 
-![Recipe_Search](src/master/src/assets/Recipe_Search.gif)
+![Recipe_Search](src/assets/Recipe_Search.gif)
 
 ### Account Authentication
 
