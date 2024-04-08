@@ -23,7 +23,7 @@ search page more dynamic.
 One of the major challenges of the application was the recipe search. While it works with basic queries for now,
 eventually the search page will recommend recipes to minimze food waste by prioritizing aging inventory. 
 
-![](https://bitbucket.org/ergerodr/groceries-vue-app/src/master/src/assets/Recipe_Search.gif)
+https://bitbucket.org/ergerodr/groceries-vue-app/src/master/src/assets/Recipe_Search.gif
 
 ### Account Authentication
 
