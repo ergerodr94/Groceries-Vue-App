@@ -57,6 +57,7 @@
             console.error('Error fetching recipes:', error);
           });
       },
+
       handleSearchInput(){
         // Reset page to 1 when the search query changes
         this.page = 1;

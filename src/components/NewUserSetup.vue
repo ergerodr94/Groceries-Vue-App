@@ -57,10 +57,12 @@ export default {
     async createHousehold(){
       const url = 'http://localhost:5001/unpack-the-pantry-fc442/us-central1/createHousehold/createHousehold'
       const houseHold = this.householdName
+      const userUid = this.$store.state.user.uid
       const displayName = this.$store.state.user.displayName
       const response = await axios.post(url, { 
         household: houseHold,
-        displayName: displayName })
+        displayName: displayName,
+        userId: userUid })
         .then(response => {
           if(response.status === 200){
             window.alert('Household created successfully');
@@ -71,7 +73,7 @@ export default {
         .catch(error => {
           console.error(error);
           console.log("RESPOSNE: ");
-          console.log(response.data);
+          console.log(error.data);
           window.alert('An error occurred while creating the house.');
         });
     }

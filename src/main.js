@@ -1,4 +1,4 @@
-import { VueElement, createApp } from 'vue'
+import { VueElement, createApp, vuex, watch } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store/store'
@@ -43,7 +43,8 @@ const vuetifyApp = createVuetify({
     }, vuetifyOptions
 })
 
-const app = createApp(App).use(store).use(router).use(vuetifyApp).mount('#app')
+const app = createApp(App).use(store).use(vuex).use(router).use(vuetifyApp).mount('#app');
+
 
 
 

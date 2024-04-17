@@ -4,6 +4,8 @@
     <div v-if="householdName == null">
       You are not in a household yet.
       Please join a household or create your own household
+
+      <v-btn @click="redirectToNewUserPage()"> Create Household </v-btn>
     </div>
         
     <div v-else>
@@ -25,6 +27,14 @@
     },
     methods: {
       // your methods here
+      redirectToNewUserPage(){
+        if(this.$store.state.user){
+          this.$router.push('/newuser')
+        } else {
+          this.$router.push('/login')
+        }
+        
+      }
     },
     computed: {
       // your computed properties here

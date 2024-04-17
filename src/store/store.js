@@ -1,25 +1,24 @@
 import { createStore } from 'vuex'
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, setPersistence, browserLocalPersistence } from "firebase/auth";
 import { auth } from '../firebase.js'
 import axios from 'axios';
 import firebase from 'firebase/compat/app';
 import router from '@/router/index.js';
-import { VueElement } from 'vue';
+import { VueElement, onMounted, watch } from 'vue';
 
-onAuthStateChanged(auth, (user) => {
-  if(user){
-  // https://firebase.google.com/docs/reference/js/auth.user
-  const uid = user.uid;
-  console.log("uid: ", uid)
-  } else { 
-    // User is signed out
-  }
-})
+setPersistence(auth, browserLocalPersistence)
+  .then(() => {
+    const provider = new GoogleAuthProvider();
+    return firebase.auth().signInWithPopup(auth, provider);
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMsg = error.message;
+  })
 
 export default createStore({
-
   state: {
-    //Where our Data is stored.  
+    //Where our Data is stored. 
     show1: false,
     newUser: true, 
     household: null,
@@ -43,9 +42,14 @@ export default createStore({
           // Get Google Access Token
           const credential = GoogleAuthProvider.credentialFromResult(result);
           const token = credential.accessToken; 
-          console.log("Token: ", token)
           //Signed in user info
           state.user = result.user;
+
+          //Write code here that will check if a user, already has a house in the database, and then 
+          //retrieve that information to write to the state. 
+          console.log("result.user: see below");
+          localStorage.setItem(result.user.uid, result.user);
+          console.log(result.user);
           router.push('/newuser');
         }).catch((error) => {
           const errorCode = error.code;
@@ -58,7 +62,28 @@ export default createStore({
     },
     handleLogout(state){
       state.user = "";
-    },
+        onAuthStateChanged(auth, (user) => {
+          if(user){
+          // https://firebase.google.com/docs/reference/js/auth.user
+          const uid = user.uid;
+          console.log("onAuthStateChanged: ");
+          console.log(user.uid);
+          } else { 
+            // User is signed out
+          }
+        })
+        //firebase:authUser:AIzaSyC6_5UcHWmpAV5EZPUXbnJrTcRL7KTrNuU:[DEFAULT]
+        watch(state.user, ()=>{
+          localStorage.setItem("user", JSON.stringify(userVal));
+        },
+        { deep:true}
+        );
+      
+        state.user.value = JSON.parse(localStorage.getItem("user"));
+        console.log("Get Item: " + user);
+   
+      },
+    
 
     houseRegistered(state, houseName){
       state.newUser = false;
@@ -72,5 +97,6 @@ export default createStore({
   },
 
   modules: {
+    
   }
 })
