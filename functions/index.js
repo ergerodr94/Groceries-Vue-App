@@ -15,11 +15,29 @@ app.use(express.json());
 
 app.post('/createHousehold', (req, res) => {
   console.log(req.body)
-  try{
-    const houseDocRef = db.collection('houses').doc().set({
+  try{//houseDocRef is a promise to write to database
+    const houseDocRef = db.collection('houses').doc();
+    
+    houseDocRef.set({
       houseId: req.body.household,
-      manager: req.body.displayName
+      manager: req.body.displayName,
+      uid: req.body.userId
     });
+
+    console.log("houseDocRef");
+    console.log(houseDocRef.id);
+
+    db.collection('users').where("UID", "==", req.body.userId).get()
+      .then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+          db.collection('users').doc(doc.id).update({
+            houseId: houseDocRef.id
+          })
+          console.log("doc.data");
+          console.log(doc.data());
+        })
+      });
+      
     res.status(200).send({status: 'success', message: 'Household created successfully'});
   } catch(error){
     console.log("What is happening? ");
@@ -48,18 +66,6 @@ app.post('/saveItem', (req, res) => {
 })
 exports.saveItem = functions.https.onRequest(app);
 
-exports.makeUppercase = functions.firestore.document('/messages/{documentId}')
-    .onCreate((snap, context) => {
-      const original = snap.data().original;
-      console.log('Uppercasing', context.params.documentId, original);
-      const uppercase = original.toUpperCase();
-      return snap.ref.set({uppercase}, {merge: true});
-    });
-
-exports.helloWorld = functions.https.onRequest((req, res) => {
-  res.send('Hello from firebase function');
-});
-  
 exports.userAdded = functions.auth.user().onCreate(user => {
   console.log(`${user.email} is created` );
 

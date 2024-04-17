@@ -15,7 +15,7 @@
               <RouterLink to="/profile"> Profile </RouterLink>
             </v-btn>
             <v-btn>
-              <RouterLink v-if="$store.state.user" to="/logout"> Logout </RouterLink>
+              <RouterLink @click="$store.commit('handleLogout')" v-if="$store.state.user" to="/logout"> Logout </RouterLink>
               <RouterLink v-else to="/login"> Login </RouterLink>
             </v-btn>
         </v-app-bar>

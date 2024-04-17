@@ -48,7 +48,7 @@ firebase emulators:start
 Docker Compose is used to build the Vue.js Frontend.
 
 ```sh
-docker compose up #to build
+docker compose up #builds app
 docker compose down #destroys app
 ```
 
