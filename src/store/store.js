@@ -47,6 +47,14 @@ export default createStore({
 
           //Write code here that will check if a user, already has a house in the database, and then 
           //retrieve that information to write to the state. 
+          if(state.user.uid){
+            result = this.dispatch('retrieveHouse');
+            console.log("dispatch Result")
+            console.log(result);
+
+            //state.household = ?
+          }
+
           console.log("result.user: see below");
           localStorage.setItem(result.user.uid, result.user);
           console.log(result.user);
@@ -79,21 +87,31 @@ export default createStore({
         { deep:true}
         );
       
-        state.user.value = JSON.parse(localStorage.getItem("user"));
+        state.user = JSON.parse(localStorage.getItem("user"));
         console.log("Get Item: " + user);
    
       },
-    
 
     houseRegistered(state, houseName){
       state.newUser = false;
       state.household = houseName;
+      console.log("houseRegistration: complete!")
     }
     
   },
 
   actions: {
     //Methods that can't change data in the state, but they can call mutations. Actions are dispached(triggered).
+    async retrieveHouse(){
+      const url = 'http://localhost:5001/unpack-the-pantry-fc442/us-central1/retrieveHouse/retrieveHouse'
+      await axios.post(url, {
+        uid: this.state.user.uid 
+      }).then(response => {
+        if(response.status === 200){
+          this.commit('houseRegistered', response.data.houseID);
+        }
+      });
+    }
   },
 
   modules: {
