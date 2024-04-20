@@ -40,13 +40,33 @@ app.post('/createHousehold', (req, res) => {
       
     res.status(200).send({status: 'success', message: 'Household created successfully'});
   } catch(error){
-    console.log("What is happening? ");
+    console.log("createHousehold: ");
     console.log(error);
     res.status(500).send({status: 'error', message: 'An Error Occurred while creating household'})
   }
 })
-
 exports.createHousehold = functions.https.onRequest(app);
+
+app.post('/retrieveHouse', (req, res) =>{
+  console.log('retrieveHouse: ');
+  console.log(req.body);
+  try{
+    db.collection('houses').where('uid', '==', req.body.uid).get()
+      .then(snapshot => {
+        if(snapshot.size == 1){
+          const house = snapshot.docs[0].data();
+          console.log(house);
+          res.status(200).send({status: 'success', message: "Retrieved house", houseID: house});
+        }
+      });
+  } catch(error) {
+    console.log("Error: ")
+    console.log(error);
+    res.status(500).send({status: 'error', message: 'An Error Ocurred while retrieving user house information.'});
+  }
+})
+exports.retrieveHouse = functions.https.onRequest(app);
+
 
 app.post('/saveItem', (req, res) => {
   console.log(req.body);

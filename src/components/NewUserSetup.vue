@@ -66,8 +66,8 @@ export default {
         .then(response => {
           if(response.status === 200){
             window.alert('Household created successfully');
-            this.$store.commit('houseRegistered', houseHold)
-            this.$router.push('/household')
+            this.$store.commit('houseRegistered', houseHold);
+            this.$router.push('/household');
           }
         })
         .catch(error => {
