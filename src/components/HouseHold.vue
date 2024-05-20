@@ -9,7 +9,11 @@
     </div>
         
     <div v-else>
-      {{ householdName }}
+      {{ householdName.houseName }} <br> 
+      Managed By: {{ householdName.manager }} &nbsp; 
+      <br>
+      <br>
+      Members
     </div>
 
  
