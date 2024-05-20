@@ -38,7 +38,7 @@ export default createStore({
       // Replace with your actual API endpoint
       const provider = new GoogleAuthProvider();
       signInWithPopup(auth, provider)
-        .then((result) => {
+        .then(async (result) => {
           // Get Google Access Token
           const credential = GoogleAuthProvider.credentialFromResult(result);
           const token = credential.accessToken; 
@@ -47,8 +47,8 @@ export default createStore({
 
           //Write code here that will check if a user, already has a house in the database, and then 
           //retrieve that information to write to the state. 
-          if(state.user.uid){
-            result = this.dispatch('retrieveHouse');
+          if(state.user.uid ){
+            result = await this.dispatch('retrieveHouse');
             console.log("dispatch Result")
             console.log(result);
 

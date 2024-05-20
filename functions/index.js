@@ -19,7 +19,8 @@ app.post('/createHousehold', (req, res) => {
     const houseDocRef = db.collection('houses').doc();
     
     houseDocRef.set({
-      houseId: req.body.household,
+      houseId: houseDocRef,
+      houseName: req.body.household,
       manager: req.body.displayName,
       uid: req.body.userId
     });
@@ -47,7 +48,7 @@ app.post('/createHousehold', (req, res) => {
 })
 exports.createHousehold = functions.https.onRequest(app);
 
-app.post('/retrieveHouse', (req, res) =>{
+app.post('/retrieveHouse', async (req, res) =>{
   console.log('retrieveHouse: ');
   console.log(req.body);
   try{
