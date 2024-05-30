@@ -31,7 +31,8 @@
                 :rules="itemNameRules" ></v-text-field>
               <v-text-field v-model="groceryItem.quantity" 
                 placeholder="Remaining" 
-                hide-details></v-text-field>
+                hide-details
+                :rules="itemQuantityRules"></v-text-field>
                 <v-spacer></v-spacer>
             </v-col>
             <v-col cols="5">
@@ -55,8 +56,29 @@
       <!-- End Panels-->
     </v-expansion-panels>
 
-
     My Items
+    <div v-for="item in groceries">
+    <v-card
+    class="mx-auto"
+    max-width="344"
+    hover>
+
+    
+    <v-card-item>
+      <v-card-title>
+        {{ item.name }}
+      </v-card-title>
+
+      <v-card-subtitle>
+        item.quantity
+      </v-card-subtitle>
+    </v-card-item>
+
+    <v-card-text>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    </v-card-text>
+      </v-card>
+    </div>
   </div>
 </template>
 
@@ -79,6 +101,9 @@ export default {
       groceries: [],
       itemNameRules: [
         value => !!value || 'This field is required'
+      ],
+      itemQuantityRules: [
+        value => !!value || 'Quantity cannot be zero'
       ]
       
     }
@@ -89,7 +114,7 @@ export default {
         if(data.valid === true){
             this.saveGroceryItem()
           } else {
-            window.alert("This field is required.")
+            window.alert("These fields are required.")
           }
         } 
       ).catch(error => {
@@ -111,6 +136,7 @@ export default {
       });
 
       if(response.status === 200){
+        this.groceries.push({...this.groceryItem});
         window.alert('Item Saved Successfully');
         //this.$store.commit('houseRegistered', houseHold)
       }
