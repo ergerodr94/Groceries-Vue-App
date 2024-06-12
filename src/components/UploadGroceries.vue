@@ -70,12 +70,12 @@
       </v-card-title>
 
       <v-card-subtitle>
-        item.quantity
+       {{  item.quantity }}
       </v-card-subtitle>
     </v-card-item>
 
     <v-card-text>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      {{ item.location }} 
     </v-card-text>
       </v-card>
     </div>
