@@ -1,0 +1,19 @@
+Light Mode
+Background #F4F2F0 FAFAD2
+Primary #CE2727 #A80000
+Secondary #DEDCFF(lblue) #D2D2FA(purple) #8DE5EC (SL Blue)
+Accent #004ED1(D blue) #CEAB7B (Gold) #416690
+
+Light Mode Final
+Background: F6F6E0
+Primary: A80000
+Secondary: EFD2FA
+Accent: 004ED1
+--text: #000000;
+--background: #f6f6df;
+--primary: #004DD1;
+--secondary: #8ee5ec;
+--accent: #A80000;
+
+
+Dark Mode
