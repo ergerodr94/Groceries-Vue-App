@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "test": "vitest"
   },
   "dependencies": {
     "@mdi/font": "7.3.67",
@@ -26,6 +27,8 @@
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "@vue/compiler-sfc": "^3.3.4",
-    "vite": "^4.4.9"
+    "@vue/test-utils": "^2.4.6",
+    "vite": "^4.4.9",
+    "vitest": "^1.6.0"
   }
 }
