@@ -1,8 +1,10 @@
-version: '3'
+
+
 services:
+  # Vue.js Frontend
   web:
     container_name: groceries-web
-    build: . 
+    build: .
     stdin_open: true
     tty: true
     ports:
@@ -10,3 +12,33 @@ services:
     volumes:
       - "/app/node_modules"
       - ".:/app"
+    depends_on:
+      - firebase
+
+  # Firebase Emulators
+  firebase:
+    container_name: firebase-emulators
+    image: node:18  # Use Node.js to run Firebase CLI
+    working_dir: /firebase
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        npm install -g firebase-tools
+        firebase emulators:start --import=./seed-data --project  unpack-the-pantry-fc442
+    volumes:
+      - "./firebase:/firebase" #Mount firebase config
+      - "./firebase/service-account-key.json:/firebase/service-account-key.json"
+      - "./firebase.json:/firebase/firebase.json" #mount firebase.json correctly
+      - "./firestore-seed:/firebase/seed-data"
+      - "/home/ergerodr/.config/configstore:/root/.config/configstore" # Persist firebase CLI login
+    ports:
+      - "9099:9099"  # Auth Emulator
+      - "8080:8080"  # Firestore Emulator
+      - "5000:5000"  # Hosting Emulator
+      - "4000:4000"  # Emulator UI
+      - "4500:4500"  # Logging Emulator
+    environment:
+      - FIREBASE_PROJECT=demo-project
+      - HOST=0.0.0.0
+      - GOOGLE_APPLICATION_CREDENTIALS=/firebase/service-account-key.json
+
