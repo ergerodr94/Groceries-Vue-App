@@ -1,10 +1,10 @@
-
-
 services:
   # Vue.js Frontend
   web:
     container_name: groceries-web
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.web  # Use Vue-specific Dockerfile
     stdin_open: true
     tty: true
     ports:
@@ -18,27 +18,27 @@ services:
   # Firebase Emulators
   firebase:
     container_name: firebase-emulators
-    image: node:18  # Use Node.js to run Firebase CLI
+    build:
+      context: .
+      dockerfile: Dockerfile.firebase  # Use Firebase-specific Dockerfile
     working_dir: /firebase
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |
-        npm install -g firebase-tools
-        firebase emulators:start --import=./seed-data --project  unpack-the-pantry-fc442
+        firebase emulators:start --import=./seed-data --project unpack-the-pantry-fc442
     volumes:
-      - "./firebase:/firebase" #Mount firebase config
+      - "./firebase:/firebase"
       - "./firebase/service-account-key.json:/firebase/service-account-key.json"
-      - "./firebase.json:/firebase/firebase.json" #mount firebase.json correctly
+      - "./firebase.json:/firebase/firebase.json"
       - "./firestore-seed:/firebase/seed-data"
-      - "/home/ergerodr/.config/configstore:/root/.config/configstore" # Persist firebase CLI login
+      - "/home/ergerodr/.config/configstore:/root/.config/configstore"
     ports:
-      - "9099:9099"  # Auth Emulator
-      - "8080:8080"  # Firestore Emulator
-      - "5000:5000"  # Hosting Emulator
-      - "4000:4000"  # Emulator UI
-      - "4500:4500"  # Logging Emulator
+      - "9099:9099"
+      - "8080:8080"
+      - "5000:5000"
+      - "4000:4000"
+      - "4500:4500"
     environment:
       - FIREBASE_PROJECT=demo-project
       - HOST=0.0.0.0
       - GOOGLE_APPLICATION_CREDENTIALS=/firebase/service-account-key.json
-

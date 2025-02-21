@@ -1,0 +1,19 @@
+# Use Node.js image for Firebase Emulators
+FROM node:18-bullseye
+
+# Set working directory
+WORKDIR /firebase
+
+# Install Java (Required for Firebase Emulators)
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Firebase CLI globally
+RUN npm install -g firebase-tools
+
+# Verify Firebase CLI installation
+RUN firebase --version
+
+# Default command: Start Firebase emulators
+CMD ["firebase", "emulators:start"]
