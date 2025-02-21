@@ -1,0 +1,45 @@
+favoriteRecipes (collection)
+  ├── {favoriteID} (document)
+      ├── userID: string (who favorited, optional)
+      ├── houseID: string (house favorited, optional)
+      ├── recipeID: string
+      ├── recipeAPI: string
+      ├── recipeName: string
+      ├── cuisine: string
+      ├── htmlLink: string (recipe page)
+      ├── ingredients: array[string]
+      ├── numIngredients: number
+      ├── prepTime: number
+      ├── cookTime: number
+
+
+items (collection)
+  ├── {itemID} (document)
+      ├── ownerID: string (who added it)
+      ├── houseID: string (belongs to a house)
+      ├── location: string (e.g., fridge, pantry)
+      ├── itemName: string
+      ├── communal: boolean (shared or personal)
+      ├── numRemaining: number
+      ├── date_created: timestamp
+
+houses (collection)
+  ├── {houseID} (document)
+      ├── nickname: string
+      ├── manager: userID (who manages the house)
+
+users (collection)
+  ├── {userID} (document)
+      ├── houseID: string | null  (user can belong to one house)
+      ├── email: string
+      ├── firstName: string
+      ├── lastName: string
+      ├── accepted: boolean  (approved to join a house)
+      ├── profPic: string (URL to profile picture)
+      ├── prof_blob: string (optional image data)
+      ├── dietRestrictions (subcollection)
+      │   ├── {restrictionID} (document) { type: string }
+      ├── dislikedFoods (subcollection)
+      │   ├── {foodID} (document) { name: string }
+      ├── allergies (subcollection)
+      │   ├── {allergyID} (document) { name: string }
