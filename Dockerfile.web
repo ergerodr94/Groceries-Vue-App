@@ -6,6 +6,9 @@ WORKDIR /app/
 
 COPY package*.json /app/
 
+# Install project dependencies
+RUN npm install
+
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 # https://www.youtube.com/watch?v=CSb-sHNM2NY&ab_channel=U-LabsInternational

@@ -21,17 +21,22 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.firebase  # Use Firebase-specific Dockerfile
+    stdin_open: true
+    tty: true
     working_dir: /firebase
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |
         firebase emulators:start --import=./seed-data --project unpack-the-pantry-fc442
     volumes:
-      - "./firebase:/firebase"
-      - "./firebase/service-account-key.json:/firebase/service-account-key.json"
-      - "./firebase.json:/firebase/firebase.json"
-      - "./firestore-seed:/firebase/seed-data"
-      - "/home/ergerodr/.config/configstore:/root/.config/configstore"
+      - "./firebase.json:/firebase/firebase.json"  # Main Firebase config
+      - "./.firebaserc:/firebase/.firebaserc"      # Firebase project settings
+      - "./firestore.rules:/firebase/firestore.rules"  # Firestore security rules
+      - "./storage.rules:/firebase/storage.rules"  # Storage security rules
+      - "./service-account-key.json:/firebase/service-account-key.json"  # Service account credentials
+      - "./functions:/firebase/functions"  # Firebase Cloud Functions directory
+      - "./firestore-seed:/firebase/seed-data"  # Firestore data imports
+      - "/home/ergerodr/.config/configstore:/root/.config/configstore"  # Persist Firebase CLI login
     ports:
       - "9099:9099"
       - "8080:8080"
