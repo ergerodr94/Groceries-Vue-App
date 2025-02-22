@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express(); 
 
 const admin = require('firebase-admin');
-const { addDoc, collection, doc, setDoc } = require('firebase/firestore');
+
 const { user } = require('firebase-functions/v1/auth');
 const { Auth } = require('firebase-admin/auth');
 admin.initializeApp();
