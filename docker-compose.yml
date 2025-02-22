@@ -10,8 +10,8 @@ services:
     ports:
       - "8081:8081"
     volumes:
-      - "/app/node_modules"
-      - ".:/app"
+      - "/frugalFeast/node_modules"
+      - ".:/frugalFeast"
     depends_on:
       - firebase
 
@@ -23,19 +23,19 @@ services:
       dockerfile: Dockerfile.firebase  # Use Firebase-specific Dockerfile
     stdin_open: true
     tty: true
-    working_dir: /firebase
+    working_dir: /frugalFeast
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |
-        firebase emulators:start --import=./seed-data --project unpack-the-pantry-fc442
+        firebase emulators:start --project unpack-the-pantry-fc442
     volumes:
-      - "./firebase.json:/firebase/firebase.json"  # Main Firebase config
-      - "./.firebaserc:/firebase/.firebaserc"      # Firebase project settings
-      - "./firestore.rules:/firebase/firestore.rules"  # Firestore security rules
-      - "./storage.rules:/firebase/storage.rules"  # Storage security rules
-      - "./service-account-key.json:/firebase/service-account-key.json"  # Service account credentials
-      - "./functions:/firebase/functions"  # Firebase Cloud Functions directory
-      - "./firestore-seed:/firebase/seed-data"  # Firestore data imports
+      - "./firebase.json:/frugalFeast/firebase.json"  # Main Firebase config
+      - "./.firebaserc:/frugalFeast/.firebaserc"      # Firebase project settings
+      - "./firestore.rules:/frugalFeast/firestore.rules"  # Firestore security rules
+      - "./storage.rules:/frugalFeast/storage.rules"  # Storage security rules
+      - "./service-account-key.json:/frugalFeast/service-account-key.json"  # Service account credentials
+      - "./functions:/frugalFeast/firebase/functions"  # Firebase Cloud Functions directory
+      - "./firestore-seed:/frugalFeast/firestore-seed"  # Firestore data imports
       - "/home/ergerodr/.config/configstore:/root/.config/configstore"  # Persist Firebase CLI login
     ports:
       - "9099:9099"
