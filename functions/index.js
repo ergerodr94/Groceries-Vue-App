@@ -13,6 +13,150 @@ const db = admin.firestore();
 app.use(cors({origin: true}));
 app.use(express.json());
 
+const seedData = {
+  users: {
+    user1: {
+      houseID: "house1",
+      email: "alice@example.com",
+      firstName: "Alice",
+      lastName: "Smith",
+      accepted: true,
+      profPic: "https://example.com/alice.jpg",
+      prof_blob: "",
+      dietRestrictions: {
+        restriction1: { type: "Vegetarian" },
+      },
+      dislikedFoods: {
+        dislike1: { name: "Mushrooms" },
+      },
+      allergies: {
+        allergy1: { name: "Peanuts" },
+      },
+    },
+    user2: {
+      houseID: "house1",
+      email: "bob@example.com",
+      firstName: "Bob",
+      lastName: "Johnson",
+      accepted: true,
+      profPic: "https://example.com/bob.jpg",
+      prof_blob: "",
+      dietRestrictions: {},
+      dislikedFoods: {
+        dislike2: { name: "Olives" },
+      },
+      allergies: {},
+    },
+  },
+  houses: {
+    house1: {
+      nickname: "Cozy Home",
+      manager: "user1",
+    },
+  },
+  items: {
+    item1: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Tomatoes",
+      communal: true,
+      numRemaining: 5,
+      date_created: "2025-02-01T12:00:00Z",
+    },
+    item2: {
+      ownerID: "user2",
+      houseID: "house1",
+      location: "Pantry",
+      itemName: "Pasta",
+      communal: false,
+      numRemaining: 2,
+      date_created: "2025-02-10T15:30:00Z",
+    },
+    item3: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Cheese",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+  },
+  favoriteRecipes: {
+    fav1: {
+      userID: "user1",
+      houseID: "house1",
+      recipeID: "recipe123",
+      recipeAPI: "some-api",
+      recipeName: "Tomato Pasta",
+      cuisine: "Italian",
+      htmlLink: "https://example.com/tomato-pasta",
+      ingredients: ["Tomatoes", "Pasta", "Cheese"],
+      numIngredients: 3,
+      prepTime: 10,
+      cookTime: 20,
+    },
+    fav2: {
+      userID: "user2",
+      houseID: "house1",
+      recipeID: "recipe456",
+      recipeAPI: "some-api",
+      recipeName: "Grilled Cheese",
+      cuisine: "American",
+      htmlLink: "https://example.com/grilled-cheese",
+      ingredients: ["Bread", "Cheese", "Butter"],
+      numIngredients: 3,
+      prepTime: 5,
+      cookTime: 10,
+    },
+  },
+};
+
+// Function to seed Firestore
+const seedDatabase = async () => {
+  try {
+    console.log("Starting database seeding...");
+
+    // Batch write for efficiency
+    const batch = db.batch();
+
+    // Seed Users
+    Object.entries(seedData.users).forEach(([id, data]) => {
+      const ref = db.collection("users").doc(id);
+      batch.set(ref, data);
+    });
+
+    // Seed Houses
+    Object.entries(seedData.houses).forEach(([id, data]) => {
+      const ref = db.collection("houses").doc(id);
+      batch.set(ref, data);
+    });
+
+    // Seed Items
+    Object.entries(seedData.items).forEach(([id, data]) => {
+      const ref = db.collection("items").doc(id);
+      batch.set(ref, data);
+    });
+
+    // Seed Favorite Recipes
+    Object.entries(seedData.favoriteRecipes).forEach(([id, data]) => {
+      const ref = db.collection("favoriteRecipes").doc(id);
+      batch.set(ref, data);
+    });
+
+    // Commit batch write
+    await batch.commit();
+
+    console.log("Database seeded successfully!");
+  } catch (error) {
+    console.error("Error seeding database:", error);
+  }
+};
+
+// Run the seed function
+seedDatabase();
+
 app.post('/createHousehold', (req, res) => {
   console.log(req.body)
   try{//houseDocRef is a promise to write to database
