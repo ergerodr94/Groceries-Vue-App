@@ -2,7 +2,7 @@
 FROM node:18-bullseye
 
 # Set working directory
-WORKDIR /firebase
+WORKDIR /frugalFeast
 
 # Install Java (Required for Firebase Emulators)
 RUN apt-get update && \
@@ -15,5 +15,6 @@ RUN npm install -g firebase-tools
 # Verify Firebase CLI installation
 RUN firebase --version
 
+EXPOSE 4000
 # Default command: Start Firebase emulators
-CMD ["firebase", "emulators:start"]
+CMD ["firebase", "emulators:start" , "--", "debug"]
