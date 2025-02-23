@@ -74,7 +74,7 @@ export default {
           console.error(error);
           console.log("RESPOSNE: ");
           console.log(error.data);
-          window.alert('An error occurred while creating the house.');
+          window.alert('An error occurred while creating the house. ', error.data);
         });
     }
   },
