@@ -14,6 +14,8 @@ services:
       - ".:/frugalFeast"
     depends_on:
       - firebase
+    networks:
+      - app-network
 
   # Firebase Emulators
   firebase:
@@ -41,9 +43,16 @@ services:
       - "9099:9099"
       - "8080:8080"
       - "5000:5000"
+      - "5001:5001"
       - "4000:4000"
       - "4500:4500"
     environment:
       - FIREBASE_PROJECT=demo-project
       - HOST=0.0.0.0
       - GOOGLE_APPLICATION_CREDENTIALS=/frugalFeast/service-account-key.json
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
