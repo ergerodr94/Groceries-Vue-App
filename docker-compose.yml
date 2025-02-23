@@ -33,7 +33,7 @@ services:
       - "./.firebaserc:/frugalFeast/.firebaserc"      # Firebase project settings
       - "./firestore.rules:/frugalFeast/firestore.rules"  # Firestore security rules
       - "./storage.rules:/frugalFeast/storage.rules"  # Storage security rules
-      - "./service-account-key.json:/frugalFeast/service-account-key.json"  # Service account credentials
+      - "./firebase/service-account-key.json:/frugalFeast/service-account-key.json"  # Service account credentials
       - "./functions:/frugalFeast/firebase/functions"  # Firebase Cloud Functions directory
       - "./firestore-seed:/frugalFeast/firestore-seed"  # Firestore data imports
       - "/home/ergerodr/.config/configstore:/root/.config/configstore"  # Persist Firebase CLI login
@@ -46,4 +46,4 @@ services:
     environment:
       - FIREBASE_PROJECT=demo-project
       - HOST=0.0.0.0
-      - GOOGLE_APPLICATION_CREDENTIALS=/firebase/service-account-key.json
+      - GOOGLE_APPLICATION_CREDENTIALS=/frugalFeast/service-account-key.json
