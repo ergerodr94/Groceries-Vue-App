@@ -3,15 +3,45 @@ const express = require('express');
 const cors = require('cors');
 const app = express(); 
 
+//This includes the firebase admin SDK, which is different from the client side SDK
 const admin = require('firebase-admin');
 
-const { user } = require('firebase-functions/v1/auth');
 const { Auth } = require('firebase-admin/auth');
+
 admin.initializeApp();
 const db = admin.firestore();
 
 app.use(cors({origin: true}));
 app.use(express.json());
+
+// Array of user data
+const users = [
+  { email: "user1@example.com", password: "password123" },
+  { email: "user2@example.com", password: "password123" },
+  { email: "user3@example.com", password: "password123" },
+  { email: "user4@example.com", password: "password123" },
+  { email: "user5@example.com", password: "password123" },
+  { email: "user6@example.com", password: "password123" },
+  { email: "user7@example.com", password: "password123" },
+  { email: "user8@example.com", password: "password123" },
+  { email: "user9@example.com", password: "password123" },
+  { email: "user10@example.com", password: "password123" },
+];
+
+// Function to create users
+const createUsers = async () => {
+  for (const user of users) {
+    try {
+      const userRecord = await admin.auth().createUser({
+        email: user.email,
+        password: user.password
+      });
+      console.log(`User created: ${userRecord.uid}`);
+    } catch (error) {
+      console.error(`Error creating user ${user.email}:`, error);
+    }
+  }
+};
 
 const seedData = {
   users: {
@@ -156,6 +186,7 @@ const seedDatabase = async () => {
 
 // Run the seed function
 seedDatabase();
+createUsers();
 
 app.post('/createHousehold', (req, res) => {
   console.log(req.body)
