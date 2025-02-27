@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, setPersistence, browserLocalPersistence } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, setPersistence, browserLocalPersistence, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase.js'
 import axios from 'axios';
 import firebase from 'firebase/compat/app';
@@ -43,7 +43,7 @@ export default createStore({
           const credential = GoogleAuthProvider.credentialFromResult(result);
           const token = credential.accessToken; 
           //Signed in user info
-          state.user = result.user;
+          this.state.user = result.user;
 
           //Write code here that will check if a user, already has a house in the database, and then 
           //retrieve that information to write to the state. 
@@ -89,8 +89,11 @@ export default createStore({
       
         state.user = JSON.parse(localStorage.getItem("user"));
         console.log("Get Item: " + user);
-   
-      },
+    },
+      
+    SET_USER(state, user) {
+      state.user = user;  
+    },
 
     houseRegistered(state, houseName){
       state.newUser = false;
@@ -111,6 +114,17 @@ export default createStore({
           this.commit('houseRegistered', response.data.houseID);
         }
       });
+    },
+
+    async emailSignIn({commit}, {email, password}){
+      try{
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        commit("SET_USER", userCredential.user);
+      } catch (error) {
+        console.log("Error with emailSignIn(): " + error);
+        
+      }
+
     }
   },
 

@@ -9,10 +9,19 @@
 
         <div v-else>
           <h1>Create an Account</h1>
-          <p><input type="text" placeholder="Email" v-model="email"/></p>
-          <p><input type="password" placeholder="password" v-model="password"/></p>
-          <p><v-btn @click="register">Submit</v-btn></p>
-          <br>
+          <form @submit.prevent="handleEmailLogin">
+            <div>
+              <label>Email:</label>
+              <input type="email" v-model="email" required />
+            </div>
+            <div>
+              <label>Password:</label>
+              <input type="password" v-model="password" required />
+            </div>
+            <button type="submit">Login</button>
+            <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+          </form>
+           <br>
           Or
           <br>
           <br>
@@ -28,6 +37,7 @@
 import axios from 'axios';
 import firebase from 'firebase/compat/app';
 import { mdiGoogle } from '@mdi/js'
+import { mapActions } from 'vuex';
 
 export default {
     name: 'LoginComp',
@@ -42,6 +52,16 @@ export default {
         }
     },
     methods: {
+      ...mapActions(['emailSignIn']),
+      async handleEmailLogin(){
+        try {
+          console.log("Calling handleEmailLogin()");
+          await this.emailSignIn({email: this.email, password: this.password });
+          this.$router.push("/explore");
+        } catch (error) {
+          console.log("handleEmailLogin(): " + error);
+        }
+      }
 
     },
     computed: {
