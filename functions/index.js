@@ -28,7 +28,7 @@ const users = [
   { email: "user10@example.com", password: "password123" },
 ];
 
-// Function to create users
+
 const createUsers = async () => {
   for (const user of users) {
     try {
@@ -112,6 +112,186 @@ const seedData = {
       numRemaining: 1,
       date_created: "2025-01-28T08:45:00Z",
     },
+    item4: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Table",
+      itemName: "Yellow Onion",
+      communal: true,
+      numRemaining: 2,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item5: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Sour Cream",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item6: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Skim Milk",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item7: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Spice Cabinet",
+      itemName: "Tumeric",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item8: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Spice Cabinet",
+      itemName: "Black Cumin",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item9: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Coconut oil",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item10: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Garbanzo Beans",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item11: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "All Purpose Flour",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item12: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Tomato Paste",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item13: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Penne Pasta",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item14: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Fusilli Pasta",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item15: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Gemelli Pasta",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item16: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Macaroni Pasta",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item17: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Black Cumin",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item18: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Green Lentils",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item19: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Black Lentils",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item20: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Red Lentils",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item21: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Spring Mix",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item22: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Eggplant",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
+    item23: {
+      ownerID: "user1",
+      houseID: "house1",
+      location: "Fridge",
+      itemName: "Beets",
+      communal: true,
+      numRemaining: 1,
+      date_created: "2025-01-28T08:45:00Z",
+    },
   },
   favoriteRecipes: {
     fav1: {
@@ -153,25 +333,25 @@ const seedDatabase = async () => {
 
     // Seed Users
     Object.entries(seedData.users).forEach(([id, data]) => {
-      const ref = db.collection("users").doc(id);
+      const ref = db.collection("users").doc();
       batch.set(ref, data);
     });
 
     // Seed Houses
     Object.entries(seedData.houses).forEach(([id, data]) => {
-      const ref = db.collection("houses").doc(id);
+      const ref = db.collection("houses").doc();
       batch.set(ref, data);
     });
 
     // Seed Items
     Object.entries(seedData.items).forEach(([id, data]) => {
-      const ref = db.collection("items").doc(id);
+      const ref = db.collection("items").doc();
       batch.set(ref, data);
     });
 
     // Seed Favorite Recipes
     Object.entries(seedData.favoriteRecipes).forEach(([id, data]) => {
-      const ref = db.collection("favoriteRecipes").doc(id);
+      const ref = db.collection("favoriteRecipes").doc();
       batch.set(ref, data);
     });
 
@@ -304,6 +484,46 @@ exports.userAdded = functions.auth.user().onCreate(user => {
 exports.userDeleted = functions.auth.user().onDelete(user => {
   console.log(`${user.email} was deleted` );
   return Promise.resolve();
+});
+
+exports.getUserItems = functions.https.onCall(async (data, context) => {
+  const { userID } = data;
+
+  if (!userID) {
+      throw new functions.https.HttpsError("invalid-argument", "User ID is required.");
+  }
+
+  try {
+      // Get user details to fetch houseID
+      const userDoc = await db.collection("users").doc(userID).get();
+      if (!userDoc.exists) {
+          throw new functions.https.HttpsError("not-found", "User not found.");
+      }
+
+      const userData = userDoc.data();
+      const houseID = userData.houseID;
+
+      // Query Firestore for items that belong to the user or are communal in the house
+      const userItemsQuery = db.collection("items").where("ownerID", "==", userID);
+      const communalItemsQuery = db.collection("items").where("houseID", "==", houseID).where("communal", "==", true);
+
+      const [userItemsSnapshot, communalItemsSnapshot] = await Promise.all([
+          userItemsQuery.get(),
+          communalItemsQuery.get(),
+      ]);
+
+      // Merge results
+      const userItems = userItemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const communalItems = communalItemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+      // Use a Set to prevent duplicates (in case user owns a communal item)
+      const allItems = [...userItems, ...communalItems.filter(item => item.ownerID !== userID)];
+
+      return { items: allItems };
+  } catch (error) {
+      console.error("Error fetching user items:", error);
+      throw new functions.https.HttpsError("internal", "Unable to fetch items.");
+  }
 });
   
 exports.fruitAdded = functions.firestore

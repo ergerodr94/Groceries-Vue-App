@@ -8,7 +8,7 @@
         </div>
 
         <div v-else>
-          <h1>Create an Account</h1>
+          <h1>Login</h1>
           <form @submit.prevent="handleEmailLogin">
             <div>
               <label>Email:</label>
@@ -59,8 +59,12 @@ export default {
           await this.emailSignIn({email: this.email, password: this.password });
           this.$router.push("/explore");
         } catch (error) {
-          console.log("handleEmailLogin(): " + error);
+          window.alert("handleEmailLogin(): " + error);
+          return;
         }
+
+        
+
       }
 
     },

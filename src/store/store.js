@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, setPersistence, browserLocalPersistence, signInWithEmailAndPassword } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, setPersistence, browserLocalPersistence, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from '../firebase.js'
 import axios from 'axios';
 import firebase from 'firebase/compat/app';
@@ -30,6 +30,8 @@ export default createStore({
 
   getters: {
     //allows us to get data from our state. 
+    getUser: (state) => state.user,
+    isAuthenticated: (state) => !!state.user,
   },
 
   mutations: {
@@ -68,8 +70,15 @@ export default createStore({
           console.log(credential);
         });
     },
-    handleLogout(state){
-      state.user = "";
+    async handleLogout(state){
+      console.log("handleLogout()");
+      this.state.user = null;
+      await signOut(auth).then(() => {
+        window.alert("Sign Out Successful!");
+        router.push("/login");
+      }).catch((error) => {
+        window.alert(error);
+      });
         onAuthStateChanged(auth, (user) => {
           if(user){
           // https://firebase.google.com/docs/reference/js/auth.user
@@ -79,7 +88,7 @@ export default createStore({
           } else { 
             // User is signed out
           }
-        })
+        });
         //firebase:authUser:AIzaSyC6_5UcHWmpAV5EZPUXbnJrTcRL7KTrNuU:[DEFAULT]
         watch(state.user, ()=>{
           localStorage.setItem("user", JSON.stringify(userVal));
@@ -88,11 +97,23 @@ export default createStore({
         );
       
         state.user = JSON.parse(localStorage.getItem("user"));
-        console.log("Get Item: " + user);
+
     },
       
     SET_USER(state, user) {
       state.user = user;  
+    },
+
+    SET_LOADING(state, loading){
+      state.loading = loading;
+    },
+
+    //Below is an observer that waits until user state resolves before triggering. 
+    checkAuthState({commit}){
+      onAuthStateChanged(auth, (user) => {
+        commit("SET_USER", user);
+        commit("SET_LOADING, false")
+      })
     },
 
     houseRegistered(state, houseName){
@@ -122,7 +143,7 @@ export default createStore({
         commit("SET_USER", userCredential.user);
       } catch (error) {
         console.log("Error with emailSignIn(): " + error);
-        
+        throw error; 
       }
 
     }

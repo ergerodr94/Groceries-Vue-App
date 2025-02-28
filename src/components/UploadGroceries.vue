@@ -109,6 +109,10 @@ export default {
     }
   },
   methods: {
+    getGroceryItems(){
+      
+    },
+
     validateGroceryItem(){
       this.$refs.form.validate().then(data => {
         if(data.valid === true){

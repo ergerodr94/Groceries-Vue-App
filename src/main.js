@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store/store'
 
+//The line below checks auth state as soon as the app starts. 
+store.dispatch("checkAuthState");
 
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
