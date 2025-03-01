@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
 /dist
+firebase/service-account-key.json
+firestore-seed/firestore_export
 
 firebase-debug.log
 firestore-debug.log
