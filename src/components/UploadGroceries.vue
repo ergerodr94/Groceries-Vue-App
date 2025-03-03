@@ -85,6 +85,7 @@
 <script>
 import { db } from '@/firebase';
 import axios from 'axios'; 
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'UploadGroceries',
@@ -109,8 +110,23 @@ export default {
     }
   },
   methods: {
-    getGroceryItems(){
-      
+    async getGroceryItems(){
+      const url = "http://localhost:5001/unpack-the-pantry-fc442/us-central1/getUserItems"
+      const ownerID = this.$store.state.user.uid; 
+      console.log("userID: " + ownerID );
+      try {
+        const response = await axios.post(url, {
+          data: {ownerID: ownerID}
+      });
+
+      if(response.status === 200){
+        console.log(response);
+        this.groceries = response.data;
+      }
+      } catch (error) {
+        console.error(error);
+        window.alert(error);
+      }
     },
 
     validateGroceryItem(){
@@ -153,9 +169,20 @@ export default {
   },
   computed: {
     // your computed properties here
+    ...mapGetters(['isAuthenticated']),
+    
   },
-  mounted() {
-    // your mounted code here
+  watch: {
+    isAuthenticated(newVal){
+      if(newVal){
+        this.getGroceryItems();
+      }
+    }
+  },
+  mounted() {  
+    if(this.isAuthenticated){
+      this.getGroceryItems();
+    }
   }
 }
 </script>

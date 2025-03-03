@@ -140,6 +140,7 @@ export default createStore({
     async emailSignIn({commit}, {email, password}){
       try{
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        this.state.user = userCredential; 
         commit("SET_USER", userCredential.user);
       } catch (error) {
         console.log("Error with emailSignIn(): " + error);
