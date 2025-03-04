@@ -86,6 +86,8 @@
 import { db } from '@/firebase';
 import axios from 'axios'; 
 import { mapGetters } from 'vuex';
+import { getFunctions, httpsCallable, connectFunctionsEmulator } from "firebase/functions";
+import { getAuth } from "firebase/auth";
 
 export default {
   name: 'UploadGroceries',
@@ -114,10 +116,18 @@ export default {
       const url = "http://localhost:5001/unpack-the-pantry-fc442/us-central1/getUserItems"
       const ownerID = this.$store.state.user.uid; 
       console.log("userID: " + ownerID );
+      const functions = getFunctions(); // Initialize Firebase Functions
+      connectFunctionsEmulator(functions, "host.docker.internal", 5001)
+      const getUserItems = httpsCallable(functions, "getUserItems");
       try {
-        const response = await axios.post(url, {
-          data: {ownerID: ownerID}
-      });
+        const auth = getAuth();
+        const user = auth.currentUser; 
+
+        if(!user){
+          console.error("User is not authenticated.");
+          return; 
+        }
+        const response = await getUserItems({ownerID: ownerID});
 
       if(response.status === 200){
         console.log(response);

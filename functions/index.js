@@ -513,16 +513,17 @@ exports.userDeleted = functions.auth.user().onDelete(user => {
   return Promise.resolve();
 });
 
-exports.getUserItems = functions.https.onCall(async (ownerID) => {
-  const { userID } = ownerID;
-
-  if (!userID) {
+exports.getUserItems = functions.https.onCall(async (data, context) => {
+  console.log("data:" + data);
+  const { ownerID } = data;
+  console.log("userID: " + ownerID);
+  if (!ownerID) {
       throw new functions.https.HttpsError("invalid-argument", "User ID is required.");
   }
 
   try {
       // Get user details to fetch houseID
-      const userDoc = await db.collection("users").doc(userID).get();
+      const userDoc = await db.collection("users").doc(ownerID).get();
       if (!userDoc.exists) {
           throw new functions.https.HttpsError("not-found", "User not found.");
       }
@@ -531,8 +532,8 @@ exports.getUserItems = functions.https.onCall(async (ownerID) => {
       const houseID = userData.houseID;
 
       // Query Firestore for items that belong to the user or are communal in the house
-      const userItemsQuery = db.collection("items").where("ownerID", "==", userID);
-      const communalItemsQuery = db.collection("items").where("houseID", "==", houseID).where("communal", "==", true);
+      const userItemsQuery = db.collection("items").where("ownerID", "==", ownerID);
+      //const communalItemsQuery = db.collection("items").where("houseID", "==", houseID).where("communal", "==", true);
 
       const [userItemsSnapshot, communalItemsSnapshot] = await Promise.all([
           userItemsQuery.get(),
@@ -544,7 +545,7 @@ exports.getUserItems = functions.https.onCall(async (ownerID) => {
       const communalItems = communalItemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
       // Use a Set to prevent duplicates (in case user owns a communal item)
-      const allItems = [...userItems, ...communalItems.filter(item => item.ownerID !== userID)];
+      const allItems = [...userItems, ...communalItems.filter(item => item.ownerID !== ownerID)];
       console.log("allItems: " + allItems);
       return { items: allItems };
   } catch (error) {
