@@ -533,21 +533,19 @@ exports.getUserItems = functions.https.onCall(async (data, context) => {
 
       // Query Firestore for items that belong to the user or are communal in the house
       const userItemsQuery = db.collection("items").where("ownerID", "==", ownerID);
+
+      const [userItemsSnapshot] = await Promise.all([userItemsQuery.get()]);
+
+      //const [communalItemsSnapshot] = await Promise.all([communalItemsQuery.get()])
       //const communalItemsQuery = db.collection("items").where("houseID", "==", houseID).where("communal", "==", true);
-
-      const [userItemsSnapshot, communalItemsSnapshot] = await Promise.all([
-          userItemsQuery.get(),
-          communalItemsQuery.get(),
-      ]);
-
       // Merge results
       const userItems = userItemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      const communalItems = communalItemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
+      //const communalItems = communalItemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const allItems = [...userItems];
       // Use a Set to prevent duplicates (in case user owns a communal item)
-      const allItems = [...userItems, ...communalItems.filter(item => item.ownerID !== ownerID)];
-      console.log("allItems: " + allItems);
-      return { items: allItems };
+      //const allItems = [...userItems, ...communalItems.filter(item => item.ownerID !== ownerID)];
+      console.log("allItems: " + JSON.stringify(userItems, null, 2));
+      return { items: JSON.stringify(userItems, null, 2)};
   } catch (error) {
       console.error("Error fetching user items:", error);
       throw new functions.https.HttpsError("internal", "Unable to fetch items.");

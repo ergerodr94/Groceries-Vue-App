@@ -128,10 +128,12 @@ export default {
           return; 
         }
         const response = await getUserItems({ownerID: ownerID});
-
-      if(response.status === 200){
-        console.log(response);
-        this.groceries = response.data;
+        console.log("getUserItems():" + JSON.stringify(response.data, null, 2));
+        // Firebase always returns 200, so we check if there's data. 
+        if(response.data){
+          console.log(response);
+          this.groceries = response.data.items;
+          console.log("this.groceries: " + this.groceries);
       }
       } catch (error) {
         console.error(error);
