@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     async getGroceryItems(){
-      const url = "http://localhost:5001/unpack-the-pantry-fc442/us-central1/getUserItems"
+      const url = CLOUD_FUNCTIONS_URL + "/unpack-the-pantry-fc442/us-central1/getUserItems"
       const ownerID = this.$store.state.user.uid; 
       console.log("userID: " + ownerID );
       const functions = getFunctions(); // Initialize Firebase Functions
@@ -157,7 +157,7 @@ export default {
 
     async saveGroceryItem() {
 
-      const url = 'http://localhost:5001/unpack-the-pantry-fc442/us-central1/saveItem/saveItem'
+      const url = CLOUD_FUNCTIONS_URL + '/unpack-the-pantry-fc442/us-central1/saveItem/saveItem'
       const ownerID = "someID"//this.$store.state.user.displayName
       
       try {

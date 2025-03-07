@@ -87,10 +87,9 @@ export default createStore({
           console.log(user.uid);
           } else { 
             // User is signed out
-          }
+          } 
         });
-        //firebase:authUser:AIzaSyC6_5UcHWmpAV5EZPUXbnJrTcRL7KTrNuU:[DEFAULT]
-        watch(state.user, ()=>{
+          watch(state.user, ()=>{
           localStorage.setItem("user", JSON.stringify(userVal));
         },
         { deep:true}
@@ -127,7 +126,7 @@ export default createStore({
   actions: {
     //Methods that can't change data in the state, but they can call mutations. Actions are dispached(triggered).
     async retrieveHouse(){
-      const url = 'http://localhost:5001/unpack-the-pantry-fc442/us-central1/retrieveHouse/retrieveHouse'
+      const url = CLOUD_FUNCTIONS_URL + '/unpack-the-pantry-fc442/us-central1/retrieveHouse/retrieveHouse'
       await axios.post(url, {
         uid: this.state.user.uid 
       }).then(response => {
