@@ -126,7 +126,7 @@ export default createStore({
   actions: {
     //Methods that can't change data in the state, but they can call mutations. Actions are dispached(triggered).
     async retrieveHouse(){
-      const url = CLOUD_FUNCTIONS_URL + '/unpack-the-pantry-fc442/us-central1/retrieveHouse/retrieveHouse'
+      const url = process.env.VUE_APP_CLOUD_FUNCTIONS_URL + '/unpack-the-pantry-fc442/us-central1/retrieveHouse/retrieveHouse'
       await axios.post(url, {
         uid: this.state.user.uid 
       }).then(response => {

@@ -22,11 +22,11 @@ export const db = getFirestore();
 export const auth = getAuth();
 export const storage = getStorage();
 
-if (import.meta.env.VUE_APP_USE_AUTH_EMULATOR === "true"){
+if (process.env.VUE_APP_USE_AUTH_EMULATOR === "true"){
     connectAuthEmulator(auth, "http://127.0.0.1:9099");
 }
 
-if (import.meta.env.VUE_APP_USE_FIRESTORE_EMULATOR === "true"){
+if (process.env.VUE_APP_USE_FIRESTORE_EMULATOR === "true"){
     connectFirestoreEmulator(db, "http://127.0.0.1", 8080);
 }
 
