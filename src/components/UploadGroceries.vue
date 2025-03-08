@@ -83,10 +83,10 @@
 </template>
 
 <script>
-import { db } from '@/firebase';
+import { functions } from '@/firebase';
 import axios from 'axios'; 
 import { mapGetters } from 'vuex';
-import { getFunctions, httpsCallable, connectFunctionsEmulator } from "firebase/functions";
+import { httpsCallable } from "firebase/functions";
 import { getAuth } from "firebase/auth";
 
 export default {
@@ -113,12 +113,8 @@ export default {
   },
   methods: {
     async getGroceryItems(){
-      const url = process.env.VUE_APP_CLOUD_FUNCTIONS_URL + "/unpack-the-pantry-fc442/us-central1/getUserItems"
       const ownerID = this.$store.state.user.uid; 
-      console.log("userID: " + ownerID );
-      const functions = getFunctions(); // Initialize Firebase Functions
-      connectFunctionsEmulator(functions, "host.docker.internal", 5001)
-      const getUserItems = httpsCallable(functions, "getUserItems");
+      const getUserItems = httpsCallable(functions, "unpack-the-pantry-fc442/us-central1/getUserItems");
       try {
         const auth = getAuth();
         const user = auth.currentUser; 
