@@ -17,12 +17,22 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18  
+          
+      - name: Create .env file
+        run: |
+          echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> .env.production
 
       - name: Install dependencies
         run: npm install
 
       - name: Build Vue project
         run: npm run build  # Ensures production-ready files are deployed
+
+      - name: Deploy Firebase Functions
+        run: firebase deploy --only functions
+        env:
+          GoogleApplicationCredentials: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_UNPACK_THE_PANTRY_FC442 }}'
+
 
       - name: Deploy to Firebase Hosting (Live)
         uses: FirebaseExtended/action-hosting-deploy@v0

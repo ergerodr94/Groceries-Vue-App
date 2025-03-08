@@ -28,7 +28,6 @@ const users = [
   { email: "user10@example.com", password: "password123" },
 ];
 
-
 const createUsers = async () => {
   for (const user of users) {
     try {
@@ -37,10 +36,34 @@ const createUsers = async () => {
         password: user.password
       });
       console.log(`User created: ${userRecord.uid}`);
+      
+      const userRef = db.collection("users").doc(userRecord.uid);
+      await userRef.set({email: user.email, UID: userRecord.uid});
     } catch (error) {
-      console.error(`Error creating user ${user.email}:`, error);
+      //console.error(`Error creating user ${user.email}:`, error);
     }
   }
+};
+
+const updateItemOwners = async () => {
+  const usersSnapshot = await db.collection("users").get();
+  const userDocs = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+  if (userDocs.length === 0) {
+    console.error("No users found. Ensure users are created before running the seeder.");
+    return;
+  }
+
+  let userIndex = 0; // To cycle through users
+  const updatedItems = {};
+
+  Object.entries(seedData.items).forEach(([itemId, itemData]) => {
+    const user = userDocs[userIndex % userDocs.length]; // Assign users in a round-robin fashion
+    updatedItems[itemId] = { ...itemData, ownerID: user.id };
+    userIndex++;
+  });
+
+  return updatedItems;
 };
 
 const seedData = {
@@ -95,7 +118,7 @@ const seedData = {
       date_created: "2025-02-01T12:00:00Z",
     },
     item2: {
-      ownerID: "user2",
+      ownerID: "user1",
       houseID: "house1",
       location: "Pantry",
       itemName: "Pasta",
@@ -328,7 +351,8 @@ const seedDatabase = async () => {
   try {
     console.log("Starting database seeding...");
 
-    // Batch write for efficiency
+    // Wait for user creation to complete. 
+    await createUsers();
     const batch = db.batch();
 
     // Seed Users
@@ -343,8 +367,11 @@ const seedDatabase = async () => {
       batch.set(ref, data);
     });
 
-    // Seed Items
-    Object.entries(seedData.items).forEach(([id, data]) => {
+    // Get updated items with proper ownerIDs
+    const updatedItems = await updateItemOwners();
+
+    // Seed Items with updated ownerID
+    Object.entries(updatedItems).forEach(([id, data]) => {
       const ref = db.collection("items").doc();
       batch.set(ref, data);
     });
@@ -365,8 +392,8 @@ const seedDatabase = async () => {
 };
 
 // Run the seed function
-seedDatabase();
 createUsers();
+seedDatabase();
 
 app.post('/createHousehold', (req, res) => {
   console.log(req.body)
@@ -487,15 +514,16 @@ exports.userDeleted = functions.auth.user().onDelete(user => {
 });
 
 exports.getUserItems = functions.https.onCall(async (data, context) => {
-  const { userID } = data;
-
-  if (!userID) {
+  console.log("data:" + data);
+  const { ownerID } = data;
+  console.log("userID: " + ownerID);
+  if (!ownerID) {
       throw new functions.https.HttpsError("invalid-argument", "User ID is required.");
   }
 
   try {
       // Get user details to fetch houseID
-      const userDoc = await db.collection("users").doc(userID).get();
+      const userDoc = await db.collection("users").doc(ownerID).get();
       if (!userDoc.exists) {
           throw new functions.https.HttpsError("not-found", "User not found.");
       }
@@ -504,43 +532,26 @@ exports.getUserItems = functions.https.onCall(async (data, context) => {
       const houseID = userData.houseID;
 
       // Query Firestore for items that belong to the user or are communal in the house
-      const userItemsQuery = db.collection("items").where("ownerID", "==", userID);
-      const communalItemsQuery = db.collection("items").where("houseID", "==", houseID).where("communal", "==", true);
+      const userItemsQuery = db.collection("items").where("ownerID", "==", ownerID);
 
-      const [userItemsSnapshot, communalItemsSnapshot] = await Promise.all([
-          userItemsQuery.get(),
-          communalItemsQuery.get(),
-      ]);
+      const [userItemsSnapshot] = await Promise.all([userItemsQuery.get()]);
 
+      //const [communalItemsSnapshot] = await Promise.all([communalItemsQuery.get()])
+      //const communalItemsQuery = db.collection("items").where("houseID", "==", houseID).where("communal", "==", true);
       // Merge results
       const userItems = userItemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      const communalItems = communalItemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
+      //const communalItems = communalItemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const allItems = [...userItems];
       // Use a Set to prevent duplicates (in case user owns a communal item)
-      const allItems = [...userItems, ...communalItems.filter(item => item.ownerID !== userID)];
-
-      return { items: allItems };
+      //const allItems = [...userItems, ...communalItems.filter(item => item.ownerID !== ownerID)];
+      console.log("allItems: " + JSON.stringify(userItems, null, 2));
+      return { items: JSON.stringify(userItems, null, 2)};
   } catch (error) {
       console.error("Error fetching user items:", error);
       throw new functions.https.HttpsError("internal", "Unable to fetch items.");
   }
 });
-  
-exports.fruitAdded = functions.firestore
-  .document('/fruits/{documentId}')
-  .onCreate((snapshot, context) => {
-    console.log(snapshot.data)
-    return Promise.resolve();
-})
-  
-exports.fruitDeleted = functions.firestore
-  .document('/fruits/{documentId}')
-  .onDelete((snapshot, context) => {
-    console.log(snapshot.data, ' deleted')
-    return Promise.resolve();
-})
-  
-  
+    
 exports.fruitUpdated = functions.firestore
   .document('/fruits/{documentId}')
   .onUpdate((snapshot, context) => {

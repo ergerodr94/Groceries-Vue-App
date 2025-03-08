@@ -55,7 +55,7 @@ export default {
       this.currentQuestion = answer.nextQuestion;
     },
     async createHousehold(){
-      const url = 'http://localhost:5001/unpack-the-pantry-fc442/us-central1/createHousehold/createHousehold'
+      const url = process.env.VUE_APP_CLOUD_FUNCTIONS_URL + '/unpack-the-pantry-fc442/us-central1/createHousehold/createHousehold'
       const houseHold = this.householdName
       const userUid = this.$store.state.user.uid
       const displayName = this.$store.state.user.displayName
