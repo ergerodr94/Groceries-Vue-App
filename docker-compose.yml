@@ -36,7 +36,7 @@ services:
       - "./firestore.rules:/frugalFeast/firestore.rules"  # Firestore security rules
       - "./storage.rules:/frugalFeast/storage.rules"  # Storage security rules
       - "./firebase/service-account-key.json:/frugalFeast/service-account-key.json"  # Service account credentials
-      - "./functions:/frugalFeast/firebase/functions"  # Firebase Cloud Functions directory
+      - "./firebase/functions:/frugalFeast/firebase/functions"  # Firebase Cloud Functions directory
       - "./firestore-seed:/frugalFeast/firestore-seed"  # Firestore data imports
       - "/home/ergerodr/.config/configstore:/root/.config/configstore"  # Persist Firebase CLI login
     ports:
