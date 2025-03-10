@@ -3,6 +3,7 @@ import { initializeApp } from 'firebase/app';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { connectStorageEmulator, getStorage} from 'firebase/storage';
+import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
 import { connectAuthEmulator } from 'firebase/auth';
 
 //https://www.youtube.com/watch?v=gA6WGYQWrKc
@@ -16,18 +17,22 @@ const firebaseConfig = {
     measurementId: "G-78G6T9CCV3"
 };
 
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore();
 export const auth = getAuth();
 export const storage = getStorage();
-
-connectAuthEmulator(auth, "http://127.0.0.1:9099");
-connectFirestoreEmulator(db, "http://127.0.0.1", 8080);
+export const functions = getFunctions(app);
 
 
+if (process.env.VUE_APP_USE_AUTH_EMULATOR === "true"){
+    connectAuthEmulator(auth, "http://127.0.0.1:9099");
+}
 
+if (process.env.VUE_APP_USE_FIRESTORE_EMULATOR === "true"){
+    connectFirestoreEmulator(db, "http://127.0.0.1", 8080);
+}
 
-
-
-
+if(process.env.VUE_APP_USE_FUNCTIONS_EMULATOR === "true"){
+    connectFunctionsEmulator(functions, "host.docker.internal", 5001)
+}

@@ -83,8 +83,11 @@
 </template>
 
 <script>
-import { db } from '@/firebase';
+import { functions } from '@/firebase';
 import axios from 'axios'; 
+import { mapGetters } from 'vuex';
+import { httpsCallable } from "firebase/functions";
+import { getAuth } from "firebase/auth";
 
 export default {
   name: 'UploadGroceries',
@@ -109,8 +112,29 @@ export default {
     }
   },
   methods: {
-    getGroceryItems(){
-      
+    async getGroceryItems(){
+      const ownerID = this.$store.state.user.uid; 
+      const getUserItems = httpsCallable(functions, "getUserItems");
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser; 
+
+        if(!user){
+          console.error("User is not authenticated.");
+          return; 
+        }
+        const response = await getUserItems({ownerID: ownerID});
+        console.log("getUserItems():" + JSON.stringify(response.data, null, 2));
+        // Firebase always returns 200, so we check if there's data. 
+        if(response.data){
+          console.log(response);
+          this.groceries = response.data.items;
+          console.log("this.groceries: " + this.groceries);
+      }
+      } catch (error) {
+        console.error(error);
+        window.alert(error);
+      }
     },
 
     validateGroceryItem(){
@@ -129,7 +153,7 @@ export default {
 
     async saveGroceryItem() {
 
-      const url = 'http://localhost:5001/unpack-the-pantry-fc442/us-central1/saveItem/saveItem'
+      const url = process.env.VUE_APP_CLOUD_FUNCTIONS_URL + '/unpack-the-pantry-fc442/us-central1/saveItem/saveItem'
       const ownerID = "someID"//this.$store.state.user.displayName
       
       try {
@@ -153,9 +177,20 @@ export default {
   },
   computed: {
     // your computed properties here
+    ...mapGetters(['isAuthenticated']),
+    
   },
-  mounted() {
-    // your mounted code here
+  watch: {
+    isAuthenticated(newVal){
+      if(newVal){
+        this.getGroceryItems();
+      }
+    }
+  },
+  mounted() {  
+    if(this.isAuthenticated){
+      this.getGroceryItems();
+    }
   }
 }
 </script>

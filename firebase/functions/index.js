@@ -34,11 +34,11 @@ const createUsers = async () => {
         password: user.password,
       });
       console.log(`User created: ${userRecord.uid}`);
-
+      
       const userRef = db.collection("users").doc(userRecord.uid);
       await userRef.set({email: user.email, UID: userRecord.uid});
     } catch (error) {
-      // console.error(`Error creating user ${user.email}:`, error);
+      //console.error(`Error creating user ${user.email}:`, error);
     }
   }
 };
@@ -120,6 +120,7 @@ const seedData = {
       date_created: "2025-02-01T12:00:00Z",
     },
     item2: {
+      ownerID: "user1",
       ownerID: "user1",
       houseID: "house1",
       location: "Pantry",
@@ -374,6 +375,11 @@ const seedDatabase = async () => {
 
     // Seed Items with updated ownerID
     Object.entries(updatedItems).forEach(([id, data]) => {
+    // Get updated items with proper ownerIDs
+    const updatedItems = await updateItemOwners();
+
+    // Seed Items with updated ownerID
+    Object.entries(updatedItems).forEach(([id, data]) => {
       const ref = db.collection("items").doc();
       batch.set(ref, data);
     });
@@ -394,6 +400,7 @@ const seedDatabase = async () => {
 };
 
 // Run the seed function
+createUsers();
 createUsers();
 seedDatabase();
 

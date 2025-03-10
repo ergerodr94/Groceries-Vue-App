@@ -4,7 +4,7 @@ const serviceAccount = require("./service-account-key.json");
 // Initialize Firebase Admin SDK (connects to the Firestore Emulator)
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "http://localhost:8080" // Firestore Emulator URL
+  databaseURL: GOOGLE_FIRESTORE_URL // Firestore Emulator URL
 });
 
 const db = admin.firestore();
