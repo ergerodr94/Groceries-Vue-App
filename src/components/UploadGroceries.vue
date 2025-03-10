@@ -114,7 +114,7 @@ export default {
   methods: {
     async getGroceryItems(){
       const ownerID = this.$store.state.user.uid; 
-      const getUserItems = httpsCallable(functions, "unpack-the-pantry-fc442/us-central1/getUserItems");
+      const getUserItems = httpsCallable(functions, "getUserItems");
       try {
         const auth = getAuth();
         const user = auth.currentUser; 

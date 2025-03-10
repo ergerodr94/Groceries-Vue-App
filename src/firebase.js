@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { connectStorageEmulator, getStorage} from 'firebase/storage';
-import { getFunctions } from 'firebase/functions';
+import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
 import { connectAuthEmulator } from 'firebase/auth';
 
 //https://www.youtube.com/watch?v=gA6WGYQWrKc
