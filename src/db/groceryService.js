@@ -1,12 +1,12 @@
-import db from '.index';
+import db from './index';
 
 // Save grocery item
-export const saveGroceryItem = async (groceryItem) => {
+export const dexieSaveGroceryItem = async (groceryItem) => {
    return await db.groceries.add(groceryItem);
 };
   
 // Get all groceries
-export const getGroceryItems = async () => {
+export const dexieGetGroceryItems = async () => {
     return await db.groceries.toArray();
 };
   

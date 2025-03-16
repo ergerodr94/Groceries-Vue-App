@@ -88,6 +88,7 @@ import axios from 'axios';
 import { mapGetters } from 'vuex';
 import { httpsCallable } from "firebase/functions";
 import { getAuth } from "firebase/auth";
+import { dexieSaveGroceryItem, dexieGetGroceryItems } from '@/db/groceryService';
 
 export default {
   name: 'UploadGroceries',
@@ -112,7 +113,7 @@ export default {
     }
   },
   methods: {
-    async getGroceryItems(){
+    async getGroceryItemsFromCloud(){
       const ownerID = this.$store.state.user.uid; 
       const getUserItems = httpsCallable(functions, "getUserItems");
       try {
@@ -137,10 +138,20 @@ export default {
       }
     },
 
+    async getGroceryItemsFromBrowser(){
+      try {
+        this.groceries = await dexieGetGroceryItems();
+      } catch (error) {
+        console.error("Error loading groceries: ", error);
+        window.alert(error);
+      }
+      
+    },
+
     validateGroceryItem(){
       this.$refs.form.validate().then(data => {
         if(data.valid === true){
-            this.saveGroceryItem()
+            this.saveGroceryItemInBrowser()
           } else {
             window.alert("These fields are required.")
           }
@@ -151,7 +162,18 @@ export default {
       })
     },
 
-    async saveGroceryItem() {
+    async saveGroceryItemInBrowser(){
+      try{
+        await dexieSaveGroceryItem({...this.groceryItem});
+        this.groceries.push({...this.groceryItem});
+        window.alert("Item Saved Successfully");
+      } catch (error){
+        console.error("Error saving item: ", error);
+        window.alert("An error occurred while saving your item.");
+      }
+    },
+
+    async saveGroceryItemInCloud() {
 
       const url = process.env.VUE_APP_CLOUD_FUNCTIONS_URL + '/unpack-the-pantry-fc442/us-central1/saveItem/saveItem'
       const ownerID = "someID"//this.$store.state.user.displayName
@@ -189,7 +211,9 @@ export default {
   },
   mounted() {  
     if(this.isAuthenticated){
-      this.getGroceryItems();
+      this.getGroceryItemsFromCloud();
+    } else {
+      this.getGroceryItemsFromBrowser();
     }
   }
 }
