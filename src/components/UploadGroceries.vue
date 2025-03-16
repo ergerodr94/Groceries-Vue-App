@@ -57,29 +57,25 @@
     </v-expansion-panels>
 
     My Items
-    <div v-for="item in groceries">
-    <v-card
-    class="mx-auto"
-    max-width="344"
-    hover>
 
-    
-    <v-card-item>
-      <v-card-title>
-        {{ item.name }}
-      </v-card-title>
+    <v-data-table
+      :headers="headers"
+      :items="groceries"
+      item-value="id"
+      show-select
+  ><template v-slot:item.communal="{ item }">
 
-      <v-card-subtitle>
-       {{  item.quantity }}
-      </v-card-subtitle>
-    </v-card-item>
+  
+  
+  <v-checkbox-btn
+      v-model="item.communal"
+      :ripple="true">
+  </v-checkbox-btn>
+  </template>
+  </v-data-table>
 
-    <v-card-text>
-      {{ item.location }} 
-    </v-card-text>
-      </v-card>
+
     </div>
-  </div>
 </template>
 
 <script>
@@ -94,6 +90,11 @@ export default {
   name: 'UploadGroceries',
   data() {
     return {
+      headers: [
+  { title: "Grocery", value: "name"},
+  { title: "Location", value: "location"},
+  { title: "Quantity", value: "quantity"}
+],
       groceryItem:{
         communal: false,
         name: '',
