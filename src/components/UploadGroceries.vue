@@ -63,19 +63,18 @@
       :items="groceries"
       item-value="id"
       show-select
-  ><template v-slot:item.communal="{ item }">
-
+  ><template v-slot:item.actions="{ item }">
+    <v-btn @click="deleteGroceryItemFromBrowser(item.id)" color="red" variant="text">
+      <v-icon>mdi-delete</v-icon>
+    </v-btn>
   
-  
-  <v-checkbox-btn
-      v-model="item.communal"
-      :ripple="true">
-  </v-checkbox-btn>
   </template>
+  
   </v-data-table>
 
 
     </div>
+ 
 </template>
 
 <script>
@@ -84,7 +83,7 @@ import axios from 'axios';
 import { mapGetters } from 'vuex';
 import { httpsCallable } from "firebase/functions";
 import { getAuth } from "firebase/auth";
-import { dexieSaveGroceryItem, dexieGetGroceryItems } from '@/db/groceryService';
+import { dexieSaveGroceryItem, dexieGetGroceryItems, dexieDeleteGroceryItem } from '@/db/groceryService';
 
 export default {
   name: 'UploadGroceries',
@@ -93,7 +92,9 @@ export default {
       headers: [
   { title: "Grocery", value: "name"},
   { title: "Location", value: "location"},
-  { title: "Quantity", value: "quantity"}
+  { title: "Quantity", value: "quantity"},
+  { title: "Unit of Measure", value: "UoM"},
+  { title: "Delete", value: "actions", sortable:false}
 ],
       groceryItem:{
         communal: false,
@@ -194,6 +195,19 @@ export default {
       } catch (error) {
         console.error(error);
         window.alert('An error occurred while saving your Item.');
+      }
+    },
+    async deleteGroceryItemFromBrowser(id){
+      if(! id){
+        return;
+      }
+      try{
+        await dexieDeleteGroceryItem(id);
+        this.groceries = this.groceries.filter(item => item.id != id);
+        window.alert("Item deleted successfully.");
+      } catch (error) {
+        console.error("Error deleting item:", error);
+        window.alert("An error occurred while deleting the item.");
       }
     }
     
