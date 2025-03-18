@@ -6,7 +6,7 @@
         <v-expansion-panel-title v-slot="{ open }">
           <v-row no-gutters>
             <v-col cols="4" class="d-flex justify-start">
-              Upload Groceries
+              Add Groceries
             </v-col>
             <v-col cols="4" class="d-flex justify-start">
 
@@ -36,7 +36,8 @@
                 <v-spacer></v-spacer>
             </v-col>
             <v-col cols="5">
-              <v-select v-model="groceryItem.location" label="Location" :items="locations"  ></v-select>
+              <v-select v-model="groceryItem.location" label="Location" :items="location"  ></v-select>
+              <v-select v-model="groceryItem.UoM" label="Unit of Measure" :items="UoM" ></v-select>
             </v-col>
             <v-divider vertical class="mx-4"></v-divider>
           </v-row>
@@ -56,20 +57,36 @@
       <!-- End Panels-->
     </v-expansion-panels>
 
-    My Items
-
     <v-data-table
       :headers="headers"
       :items="groceries"
       item-value="id"
       show-select
-  ><template v-slot:item.actions="{ item }">
+      dense>
+
+      <template v-slot:item.name="{ item }">
+        <v-text-field
+          v-model="item.name"
+          density="compact"
+          variant="underlined"
+          @blur="updateGroceryItemFromBrowser(item)">
+        </v-text-field>
+      </template>
+
+      <template v-slot:item.quantity="{ item }">
+        <v-text-field
+          v-model="item.quantity"
+          density="compact"
+          variant="underlined"
+          @blur="updateGroceryItemFromBrowser(item)">
+        </v-text-field>
+      </template>
+    <!-- Delete -->  
+    <template v-slot:item.actions="{ item }">
     <v-btn @click="deleteGroceryItemFromBrowser(item.id)" color="red" variant="text">
       <v-icon>mdi-delete</v-icon>
-    </v-btn>
-  
-  </template>
-  
+    </v-btn> 
+  </template>  
   </v-data-table>
 
 
@@ -83,14 +100,14 @@ import axios from 'axios';
 import { mapGetters } from 'vuex';
 import { httpsCallable } from "firebase/functions";
 import { getAuth } from "firebase/auth";
-import { dexieSaveGroceryItem, dexieGetGroceryItems, dexieDeleteGroceryItem } from '@/db/groceryService';
+import { dexieSaveGroceryItem, dexieGetGroceryItems, dexieDeleteGroceryItem, dexieUpdateGroceryItem } from '@/db/groceryService';
 
 export default {
-  name: 'UploadGroceries',
+  name: 'InventoryGroceries',
   data() {
     return {
       headers: [
-  { title: "Grocery", value: "name"},
+  { title: "Ingredient", value: "name"},
   { title: "Location", value: "location"},
   { title: "Quantity", value: "quantity"},
   { title: "Unit of Measure", value: "UoM"},
@@ -103,7 +120,8 @@ export default {
         quantity: '',
         household: this.$store.state.household
       },
-      locations: ["freezer", "Cabinet1", "Cabinet2", "spice_rack"],
+      location: ["freezer", "Cabinet1", "Cabinet2", "spice_rack"],
+      UoM: ["cups", "fl oz", "oz", "pint", "quart", "gallon", "grams", "milliliters", "pounds"],
       groceries: [],
       itemNameRules: [
         value => !!value || 'This field is required'
@@ -150,6 +168,19 @@ export default {
       
     },
 
+    async updateGroceryItemFromBrowser(item){
+      try{
+        await dexieUpdateGroceryItem(item.id, {
+          name: item.name,
+          quantity: item.quantity
+        });
+        console.log("Updated Item: ", item);
+      } catch(error){
+        console.error("Error updating item: ", error);
+        window.alert("An error occurred while updating the item: " + error);
+      }
+    },
+
     validateGroceryItem(){
       this.$refs.form.validate().then(data => {
         if(data.valid === true){
@@ -168,7 +199,6 @@ export default {
       try{
         await dexieSaveGroceryItem({...this.groceryItem});
         this.groceries.push({...this.groceryItem});
-        window.alert("Item Saved Successfully");
       } catch (error){
         console.error("Error saving item: ", error);
         window.alert("An error occurred while saving your item.");
@@ -189,7 +219,6 @@ export default {
 
       if(response.status === 200){
         this.groceries.push({...this.groceryItem});
-        window.alert('Item Saved Successfully');
         //this.$store.commit('houseRegistered', houseHold)
       }
       } catch (error) {
@@ -203,8 +232,7 @@ export default {
       }
       try{
         await dexieDeleteGroceryItem(id);
-        this.groceries = this.groceries.filter(item => item.id != id);
-        window.alert("Item deleted successfully.");
+        this.groceries = await dexieGetGroceryItems();
       } catch (error) {
         console.error("Error deleting item:", error);
         window.alert("An error occurred while deleting the item.");

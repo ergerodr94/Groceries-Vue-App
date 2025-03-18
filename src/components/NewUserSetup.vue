@@ -25,7 +25,7 @@ export default {
       householdName: "",
       questions: [
         {
-          text: "Unpack the Pantry uses \'households\' to keep inventory of the groceries you upload to the app. \
+          text: "Unpack the Pantry uses \'households\' to keep inventory of groceries you save. \
           You can use it individually with yourself as the head of a household or join an existing one a friend has created. \
           You can always add friends to your household later. Are you planning on using Unpack the Pantry by yourself, or with friends?",
           answers: [

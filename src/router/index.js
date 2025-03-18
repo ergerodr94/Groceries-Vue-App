@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import RecipeGrid from '../components/RecipeGrid'
 import RecipeDetails from '../components/RecipeDetails'
-import uploadGroceries from '../components/UploadGroceries'
+import inventoryGroceries from '../components/InventoryGroceries'
 import HouseHold from '../components/HouseHold'
 import Profile from '../components/Profile'
 import Login from '../components/Login'
@@ -19,9 +19,9 @@ const routes = [
     component: NewUserSetup
   },
   {
-    path: '/upload',
-    name: 'Upload',
-    component: uploadGroceries
+    path: '/inventory',
+    name: 'Inventory',
+    component: inventoryGroceries
   },
   {
     path: '/household',

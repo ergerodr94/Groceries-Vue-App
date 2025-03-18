@@ -5,8 +5,8 @@
             <v-btn to="/explore">
               Explore
             </v-btn>
-            <v-btn to="/upload">
-              Upload 
+            <v-btn to="/inventory">
+              Inventory 
             </v-btn>
             <v-btn to="/household">
               Household 

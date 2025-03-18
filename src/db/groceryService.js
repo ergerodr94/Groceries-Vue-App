@@ -14,3 +14,8 @@ export const dexieGetGroceryItems = async () => {
 export const dexieDeleteGroceryItem = async (id) => {
     return await db.groceries.delete(id);
 };
+
+//Update an existing grocery item
+export const dexieUpdateGroceryItem = async (id, updatedData) => {
+    return await db.groceries.update(id, updatedData);
+};

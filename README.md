@@ -10,7 +10,7 @@ Development and deployment is now faster, easier with the usage of the Google Cl
 
 ## Features
 
-### Inventory uploading
+### Inventory management
 
 Web2py was primarily used for both front and backend in the first version. Static web pages were served and 
 users were forced to reload each webpage to navigate. Vue.js' primary use case was for making the main recipe 
