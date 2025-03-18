@@ -36,7 +36,7 @@
                 <v-spacer></v-spacer>
             </v-col>
             <v-col cols="5">
-              <v-select v-model="groceryItem.location" label="Location" :items="location"  ></v-select>
+              <v-select v-model="groceryItem.location" label="Location" :items="locations"  ></v-select>
               <v-select v-model="groceryItem.UoM" label="Unit of Measure" :items="UoM" ></v-select>
             </v-col>
             <v-divider vertical class="mx-4"></v-divider>
@@ -46,6 +46,10 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
+            <v-btn @click="addNewLocation()" color="primary" variant="text">
+              Add New Location
+            </v-btn>
+
             <v-btn @click="validateGroceryItem()" variant="text" color="primary">
               Save
             </v-btn>
@@ -100,7 +104,8 @@ import axios from 'axios';
 import { mapGetters } from 'vuex';
 import { httpsCallable } from "firebase/functions";
 import { getAuth } from "firebase/auth";
-import { dexieSaveGroceryItem, dexieGetGroceryItems, dexieDeleteGroceryItem, dexieUpdateGroceryItem } from '@/db/groceryService';
+import { dexieSaveGroceryItem, dexieGetGroceryItems, dexieDeleteGroceryItem, 
+  dexieUpdateGroceryItem, dexieGetLocations, dexieSaveLocation } from '@/db/groceryService';
 
 export default {
   name: 'InventoryGroceries',
@@ -120,7 +125,7 @@ export default {
         quantity: '',
         household: this.$store.state.household
       },
-      location: ["freezer", "Cabinet1", "Cabinet2", "spice_rack"],
+      locations: [],
       UoM: ["cups", "fl oz", "oz", "pint", "quart", "gallon", "grams", "milliliters", "pounds"],
       groceries: [],
       itemNameRules: [
@@ -168,6 +173,17 @@ export default {
       
     },
 
+    async getLocationsFromBrowser(){
+      try {
+        const storedLocations = await dexieGetLocations();
+        this.locations = storedLocations.map(loc => loc.name);
+        console.log("this.locations:" + JSON.stringify(this.locations));
+      } catch (error) {
+        console.error("Error loading locations: ", error);
+        window.alert(error);
+      }
+    },
+
     async updateGroceryItemFromBrowser(item){
       try{
         await dexieUpdateGroceryItem(item.id, {
@@ -202,6 +218,14 @@ export default {
       } catch (error){
         console.error("Error saving item: ", error);
         window.alert("An error occurred while saving your item.");
+      }
+    },
+
+    async addNewLocation() {
+      const newLoc = prompt("Enter a new location:");
+      if (newLoc && !this.locations.includes(newLoc)){
+        await dexieSaveLocation(newLoc);
+        this.locations.push(newLoc);
       }
     },
 
@@ -257,6 +281,7 @@ export default {
       this.getGroceryItemsFromCloud();
     } else {
       this.getGroceryItemsFromBrowser();
+      this.getLocationsFromBrowser();
     }
   }
 }

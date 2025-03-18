@@ -19,3 +19,18 @@ export const dexieDeleteGroceryItem = async (id) => {
 export const dexieUpdateGroceryItem = async (id, updatedData) => {
     return await db.groceries.update(id, updatedData);
 };
+
+export const dexieSaveLocation = async (locationName) => {
+    const exists = await db.locations.where("name").equalsIgnoreCase(locationName).count(); 
+    if (!exists) {
+        return await db.locations.add({ name: locationName });
+    }
+};
+
+export const dexieGetLocations = async () => {
+    return await db.locations.toArray(); 
+};
+
+export const dexieDeleteLocation = async (id) => {
+    return await db.locations.delete(id);
+};
