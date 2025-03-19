@@ -36,7 +36,24 @@
                 <v-spacer></v-spacer>
             </v-col>
             <v-col cols="5">
-              <v-select v-model="groceryItem.location" label="Location" :items="locations"  ></v-select>
+              <v-select v-model="groceryItem.location" label="Location" 
+                :items="locations"
+                item-title="name"
+                item-value="id"  >
+              
+                <!-- Customizing each item with a delete button -->
+                <template v-slot:item="{ item, props }">
+    <v-list-item v-bind="props">
+      <v-list-item-title>{{ item.name }}</v-list-item-title>
+      <v-spacer></v-spacer>
+    
+      <!-- Use native click event to ensure deleteLocation is triggered -->
+      <v-btn icon @click.native.stop="deleteLocation(item.value)" color="red">
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
+    </v-list-item>
+  </template>
+              </v-select>
               <v-select v-model="groceryItem.UoM" label="Unit of Measure" :items="UoM" ></v-select>
             </v-col>
             <v-divider vertical class="mx-4"></v-divider>
@@ -105,7 +122,7 @@ import { mapGetters } from 'vuex';
 import { httpsCallable } from "firebase/functions";
 import { getAuth } from "firebase/auth";
 import { dexieSaveGroceryItem, dexieGetGroceryItems, dexieDeleteGroceryItem, 
-  dexieUpdateGroceryItem, dexieGetLocations, dexieSaveLocation } from '@/db/groceryService';
+  dexieUpdateGroceryItem, dexieGetLocations, dexieSaveLocation, dexieDeleteLocation } from '@/db/groceryService';
 
 export default {
   name: 'InventoryGroceries',
@@ -176,11 +193,30 @@ export default {
     async getLocationsFromBrowser(){
       try {
         const storedLocations = await dexieGetLocations();
-        this.locations = storedLocations.map(loc => loc.name);
+        this.locations = storedLocations;
         console.log("this.locations:" + JSON.stringify(this.locations));
       } catch (error) {
         console.error("Error loading locations: ", error);
         window.alert(error);
+      }
+    },
+
+    async deleteLocation(id){
+      console.log("deleteLocation Called: id = ", id);
+      const locationInUse = this.groceries.some(item => item.location === id);
+      if (locationInUse){
+        window.alert("Cannot delete location: Items are using this location.");
+        return; 
+      }
+
+      try{
+        this.locations = this.locations.filter(loc => loc.id !== id);
+        await dexieDeleteLocation(id);
+
+      } catch (error){
+        console.error("Error deleting this location: ", error);
+        console.log("id: " + id);
+        window.alert("An error occured while deleting the location.");
       }
     },
 
