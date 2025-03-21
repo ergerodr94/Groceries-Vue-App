@@ -8,6 +8,7 @@ store.dispatch("checkAuthState");
 
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
+import { VDataTable } from 'vuetify/lib/labs/components.mjs'; 
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
@@ -35,7 +36,10 @@ const vuetifyApp = createVuetify({
     icons: {
       defaultSet: 'mdi',
     },
-    components,
+    components: {
+        ...components,
+        VDataTable
+    },
     directives,
     theme:{
         defaultTheme: 'dark',

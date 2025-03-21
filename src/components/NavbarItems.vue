@@ -2,22 +2,22 @@
     <div>
         <v-app-bar color="#8ee5ec"
         :elevation="24" rounded active="true">
-            <v-btn>
-              <RouterLink to="/explore"> Explore </RouterLink>
+            <v-btn to="/explore">
+              Explore
             </v-btn>
-            <v-btn>
-              <RouterLink to="/upload"> Upload </RouterLink>
+            <v-btn to="/inventory">
+              Inventory 
             </v-btn>
-            <v-btn>
-              <RouterLink to="/household"> Household </RouterLink>
+            <v-btn to="/household">
+              Household 
             </v-btn>
-            <v-btn>
-              <RouterLink to="/profile"> Profile </RouterLink>
+            <v-btn to="/profile">
+              Profile 
             </v-btn>
-            <v-btn>
-              <RouterLink @click="$store.commit('handleLogout')" v-if="$store.state.user" to="/logout"> Logout </RouterLink>
-              <RouterLink v-else to="/login"> Login </RouterLink>
+            <v-btn @click="$store.commit('handleLogout')" v-if="$store.state.user" to="/logout">
+              Logout
             </v-btn>
+            <v-btn v-else to="/login"> Login </v-btn>
         </v-app-bar>
     </div>
   </template>
