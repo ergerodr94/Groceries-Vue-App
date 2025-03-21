@@ -71,17 +71,19 @@
           </v-form>
         </v-expansion-panel-text>
       </v-expansion-panel>
-      <!-- End Panels-->
+      <!-- End 'Add Grocery' Expansion Panels-->
     </v-expansion-panels>
 
     <v-data-table :headers="headers" :items="groceries" item-value="name" show-select dense>
 
+      <!-- -->
       <template v-slot:item.name="{ item }">
         <v-text-field v-model="item.name" density="compact" variant="underlined"
           @blur="updateGroceryItemFromBrowser(item)">
         </v-text-field>
       </template>
 
+      <!-- Edit location in Data Table -->
       <template v-slot:item.location="{ item }">
         <v-btn>
           {{ getLocationName(item.location) }}
@@ -100,11 +102,31 @@
         </v-btn>
       </template>
 
+      <template v-slot:item.UoM="{item}">
+        <v-btn>
+          {{ item.UoM }}
+          <v-menu activator="parent">
+            <v-list>
+              <v-list-item
+                v-for="unit in UoM"
+                :key="unit"
+                :value="unit"
+                @click="selectUnits(unit, item)">
+                <v-list-item-title> {{ unit }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-btn>
+      </template>
+
+      <!-- Edit Quantity Field for Data Table. -->
       <template v-slot:item.quantity="{ item }">
         <v-text-field v-model="item.quantity" density="compact" variant="underlined"
           @blur="updateGroceryItemFromBrowser(item)">
         </v-text-field>
       </template>
+
+
       <!-- Delete -->
       <template v-slot:item.actions="{ item }">
         <v-btn @click="deleteGroceryItemFromBrowser(item.id)" color="red" variant="text">
@@ -145,10 +167,11 @@ export default {
         name: '',
         location: '',
         quantity: '',
+        UoM: '',
         household: this.$store.state.household
       },
       locations: [],
-      UoM: ["cups", "fl oz", "oz", "pint", "quart", "gallon", "grams", "milliliters", "pounds"],
+      UoM: ["N/A","cups", "fl oz", "oz", "pint", "quart", "gallon", "grams", "milliliters", "pounds"],
       groceries: [],
       itemNameRules: [
         value => !!value || 'This field is required'
@@ -230,7 +253,8 @@ export default {
         await dexieUpdateGroceryItem(item.id, {
           name: item.name,
           quantity: item.quantity,
-          location: item.location
+          location: item.location,
+          UoM:item.UoM
         });
         console.log("Updated Item: ", item);
       } catch (error) {
@@ -276,6 +300,11 @@ export default {
       grocItem.location = location.id; 
       console.log("Saving Grocery Item: " + JSON.stringify(grocItem));
       this.updateGroceryItemFromBrowser(grocItem);
+    },
+
+    selectUnits(unit, grocItem){
+      grocItem.UoM = unit;
+      this.updateGroceryItemFromBrowser(grocItem)
     },
 
     async saveGroceryItemInCloud() {
