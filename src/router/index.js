@@ -5,9 +5,14 @@ import inventoryGroceries from '../components/InventoryGroceries'
 import HouseHold from '../components/HouseHold'
 import Profile from '../components/Profile'
 import Login from '../components/Login'
+import Hero from '../components/Hero'
 import NewUserSetup from '../components/NewUserSetup'
 
 const routes = [
+  { path:'/index',
+    name:'Hero',
+    component: Hero
+  },
   {
     path: '/explore',
     name: 'Explore',

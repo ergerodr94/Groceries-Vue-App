@@ -6,7 +6,8 @@ An application for managing your pantry inventory, planning meals, and enhancing
 
 This repository is a modernization of the web2py project [Unpack the Pantry](https://bitbucket.org/ergerodr/groceriesapi/src/master/) with a focus on improving development speed and user experience. 
 
-Development and deployment is now faster, easier with the usage of the Google Cloud Platform.
+Development and deployment is now faster, easier with the usage of the Google Cloud Platform. The live site is 
+hosted at the following [link](https://unpack-the-pantry-fc442.web.app/)
 
 ## Features
 
@@ -38,18 +39,19 @@ Functions and is hosted on Google Cloud.
 
 Currently, [Firebase cloud emulators](https://firebase.google.com/docs/emulator-suite) are the primary method 
 to host this project. This project uses the Authentication, Firestore, Web Hosting and Cloud Functions 
-emulators. 
+emulators. More information on setting up your Firebase emulators locally can be found at the link above. 
 
 ```sh
 firebase emulators:start
 ```
 
-
-Docker Compose is used to build the Vue.js Frontend.
+Alternatively, you can also build the emulators and Vue.js Frontend using Docker Compose. Simply use the commands
+below. 
 
 ```sh
 docker compose up #builds app
 docker compose down #destroys app
+docker compose build --no-cache #build containers from scratch. 
 ```
 
 
