@@ -18,7 +18,9 @@
               Logout
             </v-btn>
             <v-btn v-else to="/login"> Login </v-btn>
+            <img class="ml-auto" src="../assets/Edamam_Badge_White.svg" width="200" height="200"/>
         </v-app-bar>
+        
     </div>
   </template>
   <script>

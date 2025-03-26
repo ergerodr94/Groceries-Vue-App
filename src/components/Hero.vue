@@ -12,7 +12,7 @@
       </ul>
       <br>
       <div class="text-center">
-        <v-btn justify="center">Start Cooking Smarter!</v-btn>
+        <v-btn justify="center" @click="this.$router.push('/inventory')">Start Cooking Smarter!</v-btn>
       </div>
     </div>
 </div>
