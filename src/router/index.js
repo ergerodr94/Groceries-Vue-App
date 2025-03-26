@@ -9,7 +9,7 @@ import Hero from '../components/Hero'
 import NewUserSetup from '../components/NewUserSetup'
 
 const routes = [
-  { path:'/index',
+  { path:'/',
     name:'Hero',
     component: Hero
   },
